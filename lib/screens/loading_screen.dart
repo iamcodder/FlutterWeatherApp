@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
+import 'package:weatherapp/screens/city_screen.dart';
 import 'package:weatherapp/services/location.dart';
 import 'package:weatherapp/services/networking.dart';
-import 'package:weatherapp/utilities/decode.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -20,6 +20,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void deactivate() {
     super.deactivate();
+    Navigator.pop(context);
   }
 
   void getLocation() async {
@@ -33,10 +34,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
     await networking.fetchWeather();
     http.Response response = networking.response;
+    print('response : ${response.body}');
 
     if (response.statusCode == 200) {
-      Decode decode = Decode(response.body);
-      decode.decode();
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return CityScreen(response.body);
+      }));
     } else {
       print(response.statusCode);
     }
@@ -46,7 +49,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: SpinKitWanderingCubes(
+        child: SpinKitSquareCircle(
           color: Colors.blue,
           duration: const Duration(seconds: 2),
         ),

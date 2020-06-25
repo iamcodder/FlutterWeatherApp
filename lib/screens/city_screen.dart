@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:weatherapp/utilities/constants.dart';
+import 'package:weatherapp/utilities/decode.dart';
 
 class CityScreen extends StatefulWidget {
+  CityScreen(this.weatherApi);
+
+  final String weatherApi;
+
   @override
   _CityScreenState createState() => _CityScreenState();
 }
 
 class _CityScreenState extends State<CityScreen> {
+  String cityName;
+  Decode decode;
+
+  @override
+  void initState() {
+    super.initState();
+    decode = Decode(widget.weatherApi);
+    cityName = decode.getCityName();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +53,7 @@ class _CityScreenState extends State<CityScreen> {
               FlatButton(
                 onPressed: () {},
                 child: Text(
-                  'Get Weather',
+                  'Get Weather ${decode.getCityName()}',
                   style: kButtonTextStyle,
                 ),
               ),
