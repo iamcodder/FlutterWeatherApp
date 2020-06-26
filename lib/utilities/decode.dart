@@ -12,9 +12,9 @@ class Decode {
 
   String getLatitude() => _jsonDecoder['coord']['lat'].toString();
 
-  String getWeatherId() => _jsonDecoder['weather'][0]['id'].toString();
-
   String getMain() => _jsonDecoder['weather'][0]['main'].toString();
+
+  String getWeatherId() => _jsonDecoder['weather'][0]['id'].toString();
 
   String getDescription() =>
       _jsonDecoder['weather'][0]['description'].toString();
