@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
+import 'package:weatherapp/data/weather_model.dart';
 import 'package:weatherapp/screens/home_screen.dart';
 import 'package:weatherapp/services/location.dart';
 import 'package:weatherapp/services/networking.dart';
@@ -34,7 +35,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
     await networking.fetchWeather();
     http.Response response = networking.response;
-    print('response : ${response.body}');
+    //print('response : ${response.body}');
+
+    WeatherModel model = await networking.fetchDeneme();
 
     if (response.statusCode == 200) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {

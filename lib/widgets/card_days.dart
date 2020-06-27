@@ -25,13 +25,15 @@ class _CardDaysState extends State<CardDays> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(widget.time, style: kCardTimeTextStyle),
-            Icon(widget.weatherDegreeIcon, color: Colors.white),
-            Text(widget.degree + '°C', style: kCardDegreeTextStyle),
-          ],
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(widget.time, style: kCardTimeTextStyle),
+              Icon(widget.weatherDegreeIcon, color: Colors.white),
+              Text(widget.degree + '°C', style: kCardDegreeTextStyle),
+            ],
+          ),
         ),
       ),
     );

@@ -65,7 +65,6 @@ class _CityScreenState extends State<CityScreen> {
       body: Container(
         color: Colors.white,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Icon(
               WeatherIcons.day_sunny,
@@ -114,7 +113,65 @@ class _CityScreenState extends State<CityScreen> {
                 CardDays('20:11', '14', WeatherIcons.snowflake_cold,
                     Colors.blueAccent),
               ],
-            )
+            ),
+            Container(
+                margin: EdgeInsets.all(20),
+                width: double.infinity,
+                child: Text('Additional Info',
+                    style: kTempTextStyle.copyWith(
+                      fontSize: 20.0,
+                      letterSpacing: 1,
+                      fontFamily: 'PatuaOne',
+                    ))),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  children: [
+                    Text('Main',
+                        style: kActiveDaysTextStyle.copyWith(fontSize: 14)),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text('Humidity',
+                        style: kActiveDaysTextStyle.copyWith(fontSize: 14)),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text('${decode.getMain()}',
+                        style: kPassiveDaysTextStyle.copyWith(fontSize: 14)),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text('%${decode.getHumidity()}',
+                        style: kPassiveDaysTextStyle.copyWith(fontSize: 14)),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text('Feels Like',
+                        style: kActiveDaysTextStyle.copyWith(fontSize: 14)),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text('Wind',
+                        style: kActiveDaysTextStyle.copyWith(fontSize: 14)),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text('${decode.getFeelsLike()}°C',
+                        style: kPassiveDaysTextStyle.copyWith(fontSize: 14)),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text('${decode.getWindSpeed()} km/s',
+                        style: kPassiveDaysTextStyle.copyWith(fontSize: 14)),
+                  ],
+                )
+              ],
+            ),
           ],
         ),
       ),
