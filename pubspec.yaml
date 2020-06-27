@@ -32,3 +32,8 @@ flutter:
       fonts:
         - asset: fonts/SpartanMB-Black.otf
           weight: 900
+
+    - family: PatuaOne
+      fonts:
+        - asset: fonts/PatuaOne-Regular.ttf
+          weight: 400

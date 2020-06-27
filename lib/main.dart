@@ -7,7 +7,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.light(),
+      theme: ThemeData.light().copyWith(
+        appBarTheme: AppBarTheme(
+          color: Colors.white,
+          elevation: 0,
+          centerTitle: true,
+          textTheme: TextTheme(
+            headline6: TextStyle(
+              color: Colors.black,
+              fontSize: 16.0,
+              letterSpacing: 1,
+              fontFamily: 'Spartan MB',
+            ),
+          ),
+        ),
+      ),
       home: LoadingScreen(),
     );
   }

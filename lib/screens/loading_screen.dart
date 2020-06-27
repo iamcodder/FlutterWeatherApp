@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
-import 'package:weatherapp/screens/city_screen.dart';
+import 'package:weatherapp/screens/home_screen.dart';
 import 'package:weatherapp/services/location.dart';
 import 'package:weatherapp/services/networking.dart';
 
