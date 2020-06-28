@@ -9,10 +9,18 @@ class Networking {
   double _latitude;
   double _longitude;
   String _apiKey;
+  WeatherModel _model;
 
-  Future<WeatherModel> fetchDeneme() async {
-    http.Response response = await http.get(
-        'https://api.openweathermap.org/data/2.5/forecast?lat=$_latitude&lon=$_longitude&appid=$_apiKey&units=metric');
-    return WeatherModel.fromJson(json.decode(response.body));
+  Future<bool> fetchDeneme() async {
+    try {
+      http.Response response = await http.get(
+          'https://api.openweathermap.org/data/2.5/forecast?lat=$_latitude&lon=$_longitude&appid=$_apiKey&units=metric');
+      _model = WeatherModel.fromJson(json.decode(response.body));
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
+
+  WeatherModel get getWeatherModel => _model;
 }

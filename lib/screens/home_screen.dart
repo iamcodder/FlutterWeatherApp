@@ -160,7 +160,7 @@ class _CityScreenState extends State<CityScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text('${widget.model.list[0].wind.deg} km/s',
+                    Text('${widget.model.list[0].wind.speed} km/s',
                         style: kPassiveDaysTextStyle.copyWith(fontSize: 14)),
                   ],
                 )

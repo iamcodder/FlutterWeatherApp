@@ -1,6 +1,6 @@
 class WeatherModel {
-  String cod;
-  int message;
+  dynamic cod;
+  dynamic message;
   City city;
   List<ListModel> list;
 
@@ -21,20 +21,19 @@ class WeatherModel {
 }
 
 class City {
-  int id;
-  String name;
+  dynamic id;
+  dynamic name;
   Cord coord;
-  String country;
-  int population;
-  int timezone;
+  dynamic country;
+  dynamic population;
+  dynamic timezone;
 
-  City(
-      {this.id,
-      this.name,
-      this.coord,
-      this.country,
-      this.population,
-      this.timezone});
+  City({this.id,
+    this.name,
+    this.coord,
+    this.country,
+    this.population,
+    this.timezone});
 
   factory City.fromJson(Map<String, dynamic> json) {
     return City(
@@ -63,7 +62,7 @@ class Cord {
 }
 
 class ListModel {
-  String dt_txt;
+  dynamic dt_txt;
   ListModelMain main;
   List<ListModelWeather> weather;
   ListModelWind wind;
@@ -73,7 +72,7 @@ class ListModel {
   factory ListModel.fromJson(Map<String, dynamic> json) {
     var tempList = json['weather'] as List;
     List<ListModelWeather> willReturnList =
-        tempList.map((e) => ListModelWeather.fromJson(e)).toList();
+    tempList.map((e) => ListModelWeather.fromJson(e)).toList();
 
     return ListModel(
       dt_txt: json['dt_txt'],
@@ -85,24 +84,23 @@ class ListModel {
 }
 
 class ListModelMain {
-  double temp;
-  double feels_like;
-  double temp_min;
-  double temp_max;
-  int pressure;
-  int sea_level;
-  int grnd_level;
-  int humidity;
+  dynamic temp;
+  dynamic feels_like;
+  dynamic temp_min;
+  dynamic temp_max;
+  dynamic pressure;
+  dynamic sea_level;
+  dynamic grnd_level;
+  dynamic humidity;
 
-  ListModelMain(
-      {this.temp,
-      this.feels_like,
-      this.temp_min,
-      this.temp_max,
-      this.pressure,
-      this.sea_level,
-      this.grnd_level,
-      this.humidity});
+  ListModelMain({this.temp,
+    this.feels_like,
+    this.temp_min,
+    this.temp_max,
+    this.pressure,
+    this.sea_level,
+    this.grnd_level,
+    this.humidity});
 
   factory ListModelMain.fromJson(Map<String, dynamic> json) {
     return ListModelMain(
@@ -119,10 +117,10 @@ class ListModelMain {
 }
 
 class ListModelWeather {
-  int id;
-  String main;
-  String description;
-  String icon;
+  dynamic id;
+  dynamic main;
+  dynamic description;
+  dynamic icon;
 
   ListModelWeather({this.id, this.main, this.description, this.icon});
 
@@ -137,8 +135,8 @@ class ListModelWeather {
 }
 
 class ListModelWind {
-  double speed;
-  int deg;
+  dynamic speed;
+  dynamic deg;
 
   ListModelWind({this.speed, this.deg});
 
