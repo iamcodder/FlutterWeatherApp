@@ -1,32 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_icons/weather_icons.dart';
+import 'package:weatherapp/data/weather_model.dart';
 import 'package:weatherapp/utilities/constants.dart';
-import 'package:weatherapp/utilities/decode_weather_api.dart';
 import 'package:weatherapp/widgets/card_days.dart';
 import 'package:weatherapp/widgets/center_text.dart';
 import 'package:weatherapp/widgets/change_color_on_text.dart';
 
 class CityScreen extends StatefulWidget {
-  CityScreen(this.weatherApi);
+  CityScreen(this.model);
 
-  final String weatherApi;
+  final WeatherModel model;
 
   @override
   _CityScreenState createState() => _CityScreenState();
 }
 
 class _CityScreenState extends State<CityScreen> {
-  Decode decode;
   bool todayVisibling = true;
   bool tomorrowVisibling = false;
   bool afterVisibling = false;
-
-  @override
-  void initState() {
-    super.initState();
-    decode = Decode(widget.weatherApi);
-  }
 
   void click(int position) {
     setState(() {
@@ -71,8 +64,9 @@ class _CityScreenState extends State<CityScreen> {
               color: Colors.deepOrange,
               size: 56,
             ),
-            WidgetCenterText('${decode.getTemp()}°C', kTempTextStyle),
-            WidgetCenterText(decode.getCityName(), kCityTextStyle),
+            WidgetCenterText(
+                '${widget.model.list[0].main.temp.round()}°C', kTempTextStyle),
+            WidgetCenterText(widget.model.city.name, kCityTextStyle),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -139,12 +133,12 @@ class _CityScreenState extends State<CityScreen> {
                 ),
                 Column(
                   children: [
-                    Text('${decode.getMain()}',
+                    Text('${widget.model.list[0].weather[0].main}',
                         style: kPassiveDaysTextStyle.copyWith(fontSize: 14)),
                     SizedBox(
                       height: 10,
                     ),
-                    Text('%${decode.getHumidity()}',
+                    Text('%${widget.model.list[0].main.humidity}',
                         style: kPassiveDaysTextStyle.copyWith(fontSize: 14)),
                   ],
                 ),
@@ -161,12 +155,12 @@ class _CityScreenState extends State<CityScreen> {
                 ),
                 Column(
                   children: [
-                    Text('${decode.getFeelsLike()}°C',
+                    Text('${widget.model.list[0].main.feels_like.round()}°C',
                         style: kPassiveDaysTextStyle.copyWith(fontSize: 14)),
                     SizedBox(
                       height: 10,
                     ),
-                    Text('${decode.getWindSpeed()} km/s',
+                    Text('${widget.model.list[0].wind.deg} km/s',
                         style: kPassiveDaysTextStyle.copyWith(fontSize: 14)),
                   ],
                 )

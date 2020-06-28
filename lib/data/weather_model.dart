@@ -79,7 +79,7 @@ class ListModel {
       dt_txt: json['dt_txt'],
       main: ListModelMain.fromJson(json['main']),
       weather: willReturnList,
-      //   wind: ListModelWind.fromJson(json['wind']),
+      wind: ListModelWind.fromJson(json['wind']),
     );
   }
 }

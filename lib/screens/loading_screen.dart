@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:http/http.dart' as http;
 import 'package:weatherapp/data/weather_model.dart';
 import 'package:weatherapp/screens/home_screen.dart';
 import 'package:weatherapp/services/location.dart';
@@ -33,18 +32,14 @@ class _LoadingScreenState extends State<LoadingScreen> {
     Networking networking =
         Networking(location.latitude, location.longitude, apiKey);
 
-    await networking.fetchWeather();
-    http.Response response = networking.response;
-    //print('response : ${response.body}');
-
     WeatherModel model = await networking.fetchDeneme();
 
-    if (response.statusCode == 200) {
+    if (model.cod == '200') {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return CityScreen(response.body);
+        return CityScreen(model);
       }));
     } else {
-      print(response.statusCode);
+      print(model.cod);
     }
   }
 
