@@ -28,12 +28,13 @@ class City {
   dynamic population;
   dynamic timezone;
 
-  City({this.id,
-    this.name,
-    this.coord,
-    this.country,
-    this.population,
-    this.timezone});
+  City(
+      {this.id,
+      this.name,
+      this.coord,
+      this.country,
+      this.population,
+      this.timezone});
 
   factory City.fromJson(Map<String, dynamic> json) {
     return City(

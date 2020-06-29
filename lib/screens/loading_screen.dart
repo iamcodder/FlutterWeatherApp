@@ -1,12 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:weatherapp/data/weather_model.dart';
 import 'package:weatherapp/screens/home_screen.dart';
-import 'package:weatherapp/services/location.dart';
+import 'package:weatherapp/services/location_services.dart';
 import 'package:weatherapp/services/networking.dart';
+import 'package:weatherapp/utilities/utilities.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -20,44 +18,34 @@ class _LoadingScreenState extends State<LoadingScreen> {
     getLocation();
   }
 
-  void showToast(String msg, Color bdColor, Color txtColor) {
-    Fluttertoast.showToast(
-        msg: msg,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: bdColor,
-        textColor: txtColor,
-        fontSize: 16.0);
-  }
-
   void getLocation() async {
     String apiKey = '61a6141389fcb5ab641237c6ae8ffefc';
 
-    Location location = Location();
-    bool isGeoFetched = await location.getCurrentLocation();
+    LocationServices locationServices = LocationServices();
 
-    if (!isGeoFetched) {
-      while (!isGeoFetched) {
-        showToast('Allow the geo request', Colors.black54, Colors.white);
-        isGeoFetched = await location.getCurrentLocation();
-        sleep(Duration(seconds: 1));
-        Fluttertoast.cancel();
-      }
+    bool serviceEnabled = await locationServices.isServiceEnabled();
+    while (!serviceEnabled) {
+      serviceEnabled = await locationServices.requestService();
+      showToast(
+          'Please open your location services', Colors.black54, Colors.white);
     }
 
-    Networking networking =
-        Networking(location.latitude, location.longitude, apiKey);
+    bool hasPermission = await locationServices.isPermissionGranted();
+    while (!hasPermission) {
+      hasPermission = await locationServices.requestPermission();
+      showToast(
+          'Please allow your location services', Colors.black54, Colors.white);
+    }
+
+    await locationServices.getLocationData();
+
+    Networking networking = Networking(
+        locationServices.latitude, locationServices.longitude, apiKey);
     bool isApiFetched = await networking.fetchDeneme();
 
-    if (!isApiFetched) {
-      while (!isApiFetched) {
-        showToast(
-            'Open your internet connection', Colors.black54, Colors.white);
-        isApiFetched = await networking.fetchDeneme();
-        sleep(Duration(milliseconds: 500));
-        Fluttertoast.cancel();
-      }
+    while (!isApiFetched) {
+      showToast('Open your internet connection', Colors.black54, Colors.white);
+      isApiFetched = await networking.fetchDeneme();
     }
 
     WeatherModel weatherModel = networking.getWeatherModel;
