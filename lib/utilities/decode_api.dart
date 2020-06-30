@@ -61,7 +61,8 @@ class DecodeApi {
       indis++;
       String time =
           weatherModel.list[indis].dt_txt.toString().substring(11, 16);
-      if (time == '00:00' && dateList.length >= 1) {
+
+      if (indis == 39 || time == '00:00' && dateList.length != 0) {
         isDone = true;
       }
       dateList.add(time);
