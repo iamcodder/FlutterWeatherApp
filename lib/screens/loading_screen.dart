@@ -50,16 +50,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
     WeatherModel weatherModel = networking.getWeatherModel;
 
-    DateTime parseTime = DateTime.parse(weatherModel.list[0].dt_txt);
-
-    print(parseTime.year);
-    print(parseTime.month);
-    print(parseTime.day);
-    print(parseTime.hour);
-    print(parseTime.minute);
-    DateTime nowTime = DateTime.now();
-    print(nowTime);
-
     if (weatherModel.cod == '200') {
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) {

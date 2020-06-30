@@ -73,7 +73,7 @@ class ListModel {
   factory ListModel.fromJson(Map<String, dynamic> json) {
     var tempList = json['weather'] as List;
     List<ListModelWeather> willReturnList =
-    tempList.map((e) => ListModelWeather.fromJson(e)).toList();
+        tempList.map((e) => ListModelWeather.fromJson(e)).toList();
 
     return ListModel(
       dt_txt: json['dt_txt'],
