@@ -21,7 +21,9 @@ class _CityScreenState extends State<CityScreen> {
   bool todayVisibling = true;
   bool tomorrowVisibling = false;
   bool afterVisibling = false;
+
   WeatherModel weatherModel;
+  DecodeApi decodeApi;
 
   List<String> degreeList;
   List<String> timeList;
@@ -30,32 +32,39 @@ class _CityScreenState extends State<CityScreen> {
   @override
   void initState() {
     weatherModel = widget.model;
-    DecodeApi decodeApi = DecodeApi(weatherModel);
-    degreeList = decodeApi.degreeList;
-    timeList = decodeApi.timeList;
-    iconList = decodeApi.iconList;
+    decodeApi = DecodeApi(weatherModel);
+    degreeList = decodeApi.getDegreeList(0);
+    timeList = decodeApi.getTimeList(0);
+    iconList = decodeApi.getIconList(0);
   }
 
   void clickCardDay(int position) {
     setState(() {
       switch (position) {
         case 0:
-          setDayVisiblingColor(true, false, false);
+          setDayVisiblingColor(position, true, false, false);
           break;
         case 1:
-          setDayVisiblingColor(false, true, false);
+          setDayVisiblingColor(position, false, true, false);
           break;
         case 2:
-          setDayVisiblingColor(false, false, true);
+          setDayVisiblingColor(position, false, false, true);
           break;
       }
     });
   }
 
-  void setDayVisiblingColor(bool todayBool, bool tomorrowBool, bool afterBool) {
-    todayVisibling = todayBool;
-    afterVisibling = afterBool;
-    tomorrowVisibling = tomorrowBool;
+  void setDayVisiblingColor(int clickedItemPosition, bool todayBool,
+      bool tomorrowBool, bool afterBool) {
+    setState(() {
+      todayVisibling = todayBool;
+      afterVisibling = afterBool;
+      tomorrowVisibling = tomorrowBool;
+
+      degreeList = decodeApi.getDegreeList(clickedItemPosition);
+      timeList = decodeApi.getTimeList(clickedItemPosition);
+      iconList = decodeApi.getIconList(clickedItemPosition);
+    });
   }
 
   @override

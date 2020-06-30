@@ -7,72 +7,79 @@ class DecodeApi {
   WeatherModel weatherModel;
 
   DecodeApi(this.weatherModel) {
-    timeList = List();
-    timeList2 = List();
-    timeList3 = List();
-    timeList4 = List();
-    timeList5 = List();
-    degreeList = List();
-    degreeList2 = List();
-    degreeList3 = List();
-    degreeList4 = List();
-    degreeList5 = List();
-    iconList = List();
-    iconList2 = List();
-    iconList3 = List();
-    iconList4 = List();
-    iconList5 = List();
+    _timeList0 = List();
+    _timeList1 = List();
+    _timeList2 = List();
+    _timeList3 = List();
+    _timeList4 = List();
+    _degreeList0 = List();
+    _degreeList1 = List();
+    _degreeList2 = List();
+    _degreeList3 = List();
+    _degreeList4 = List();
+    _iconList0 = List();
+    _iconList1 = List();
+    _iconList2 = List();
+    _iconList3 = List();
+    _iconList4 = List();
     _decodeDate();
   }
 
-  List<String> timeList;
-  List<String> timeList2;
-  List<String> timeList3;
-  List<String> timeList4;
-  List<String> timeList5;
+  List<String> _timeList0;
+  List<String> _timeList1;
+  List<String> _timeList2;
+  List<String> _timeList3;
+  List<String> _timeList4;
 
-  List<String> degreeList;
-  List<String> degreeList2;
-  List<String> degreeList3;
-  List<String> degreeList4;
-  List<String> degreeList5;
+  List<String> _degreeList0;
+  List<String> _degreeList1;
+  List<String> _degreeList2;
+  List<String> _degreeList3;
+  List<String> _degreeList4;
 
-  List<IconData> iconList;
-  List<IconData> iconList2;
-  List<IconData> iconList3;
-  List<IconData> iconList4;
-  List<IconData> iconList5;
+  List<IconData> _iconList0;
+  List<IconData> _iconList1;
+  List<IconData> _iconList2;
+  List<IconData> _iconList3;
+  List<IconData> _iconList4;
 
   void _decodeDate() {
-    _addList(timeList, degreeList, iconList);
-    _addList(timeList2, degreeList2, iconList2);
-    _addList(timeList3, degreeList3, iconList3);
-    _addList(timeList4, degreeList4, iconList4);
-    _addList(timeList5, degreeList5, iconList5);
+    _addList(_timeList0, _degreeList0, _iconList0);
+    _addList(_timeList1, _degreeList1, _iconList1);
+    _addList(_timeList2, _degreeList2, _iconList2);
+    _addList(_timeList3, _degreeList3, _iconList3);
+    _addList(_timeList4, _degreeList4, _iconList4);
   }
 
+  int indis = -1;
+  int i = -1;
+  int j = -1;
+
   void _addList(List dateList, List degreeList, List iconList) {
-    int indis = -1;
     bool isDone = false;
     while (!isDone) {
       indis++;
-      dateList
-          .add(weatherModel.list[indis].dt_txt.toString().substring(11, 16));
-      if (dateList[indis] == '00:00') isDone = true;
+      String time =
+          weatherModel.list[indis].dt_txt.toString().substring(11, 16);
+      if (time == '00:00' && dateList.length >= 1) {
+        isDone = true;
+      }
+      dateList.add(time);
     }
 
-    int i = 0;
-    while (i <= indis) {
-      degreeList
-          .add((weatherModel.list[i].main.temp as double).toStringAsFixed(0));
+    while (i < indis) {
       i++;
+      String temp = weatherModel.list[i].main.temp.toString().split('.')[0];
+      degreeList.add(temp);
     }
 
-    i = 0;
-    while (i <= indis) {
-      iconList.add(_getIcon(weatherModel.list[i].weather[0].icon));
-      i++;
+    while (j < indis) {
+      j++;
+      iconList.add(_getIcon(weatherModel.list[j].weather[0].icon));
     }
+    indis--;
+    i--;
+    j--;
   }
 
   IconData _getIcon(String iconName) {
@@ -128,5 +135,41 @@ class DecodeApi {
         break;
     }
     return icon;
+  }
+
+  List<String> getTimeList(int position) {
+    if (position == 0)
+      return _timeList0;
+    else if (position == 1)
+      return _timeList1;
+    else if (position == 2)
+      return _timeList2;
+    else if (position == 3)
+      return _timeList3;
+    else if (position == 4) return _timeList4;
+  }
+
+  List<String> getDegreeList(int position) {
+    if (position == 0)
+      return _degreeList0;
+    else if (position == 1)
+      return _degreeList1;
+    else if (position == 2)
+      return _degreeList2;
+    else if (position == 3)
+      return _degreeList3;
+    else if (position == 4) return _degreeList4;
+  }
+
+  List<IconData> getIconList(int position) {
+    if (position == 0)
+      return _iconList0;
+    else if (position == 1)
+      return _iconList1;
+    else if (position == 2)
+      return _iconList2;
+    else if (position == 3)
+      return _iconList3;
+    else if (position == 4) return _iconList4;
   }
 }
