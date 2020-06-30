@@ -76,34 +76,57 @@ class DecodeApi {
   }
 
   IconData _getIcon(String iconName) {
+    IconData icon;
     switch (iconName) {
       case '01d':
-        WeatherIcons.day_sunny;
+        icon = WeatherIcons.day_sunny;
+        break;
+      case '01n':
+        icon = WeatherIcons.night_clear;
         break;
       case '02d':
-        (WeatherIcons.cloudy);
+        icon = WeatherIcons.day_cloudy;
+        break;
+      case '02d':
+        icon = WeatherIcons.night_cloudy;
         break;
       case '03d':
-        (WeatherIcons.cloud);
+        icon = WeatherIcons.cloud;
+        break;
+      case '03n':
+        icon = WeatherIcons.cloud;
         break;
       case '04d':
-        (WeatherIcons.cloudy);
+        icon = WeatherIcons.cloudy;
+        break;
+      case '04n':
+        icon = WeatherIcons.cloudy;
         break;
       case '9d':
-        (WeatherIcons.showers);
+        icon = WeatherIcons.showers;
+        break;
+      case '9n':
+        icon = WeatherIcons.showers;
         break;
       case '10d':
-        (WeatherIcons.rain);
+        icon = WeatherIcons.day_rain;
+        break;
+      case '10n':
+        icon = WeatherIcons.night_rain;
         break;
       case '11d':
-        (WeatherIcons.thunderstorm);
+        icon = WeatherIcons.thunderstorm;
+        break;
+      case '11n':
+        icon = WeatherIcons.thunderstorm;
         break;
       case '13d':
-        (WeatherIcons.snow);
+        icon = WeatherIcons.snow;
         break;
       case '50d':
-        (WeatherIcons.windy);
+        icon = WeatherIcons.windy;
         break;
     }
+    return icon;
   }
 }
