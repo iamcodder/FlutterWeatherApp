@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_icons/weather_icons.dart';
+import 'package:weatherapp/data/gradient_colors.dart';
 import 'package:weatherapp/data/weather_model.dart';
 import 'package:weatherapp/utilities/constants.dart';
 import 'package:weatherapp/utilities/decode_api.dart';
@@ -29,6 +30,7 @@ class _CityScreenState extends State<CityScreen> {
   List<String> degreeList;
   List<String> timeList;
   List<IconData> iconList;
+  List<GradientColors> gradientList;
 
   @override
   void initState() {
@@ -37,6 +39,7 @@ class _CityScreenState extends State<CityScreen> {
     degreeList = decodeApi.getDegreeList(0);
     timeList = decodeApi.getTimeList(0);
     iconList = decodeApi.getIconList(0);
+    gradientList = decodeApi.getGradientList(0);
   }
 
   void clickCardDay(int position) {
@@ -65,6 +68,7 @@ class _CityScreenState extends State<CityScreen> {
       degreeList = decodeApi.getDegreeList(clickedItemPosition);
       timeList = decodeApi.getTimeList(clickedItemPosition);
       iconList = decodeApi.getIconList(clickedItemPosition);
+      gradientList = decodeApi.getGradientList(clickedItemPosition);
     });
   }
 
@@ -142,12 +146,16 @@ class _CityScreenState extends State<CityScreen> {
                   shrinkWrap: true,
                   itemCount: timeList.length,
                   itemBuilder: (BuildContext context, int position) {
-                    return CardDays(timeList[position], degreeList[position],
-                        iconList[position], Colors.orange);
+                    return CardDays(
+                        timeList[position],
+                        degreeList[position],
+                        iconList[position],
+                        gradientList[position].beginColor,
+                        gradientList[position].endColor);
                   }),
             ),
             Expanded(
-              flex: 2,
+              flex: 1,
               child: Container(
                   child: Align(
                 alignment: Alignment.center,
@@ -167,46 +175,63 @@ class _CityScreenState extends State<CityScreen> {
                 children: [
                   Column(
                     children: [
-                      Text('Main',
-                          style: kActiveDaysTextStyle.copyWith(fontSize: 14)),
-                      SizedBox(
-                        height: 10,
+                      Expanded(
+                        flex: 1,
+                        child: Text('Main',
+                            style: kActiveDaysTextStyle.copyWith(fontSize: 14)),
                       ),
-                      Text('Humidity',
-                          style: kActiveDaysTextStyle.copyWith(fontSize: 14)),
+                      Expanded(
+                        flex: 1,
+                        child: Text('Humidity',
+                            style: kActiveDaysTextStyle.copyWith(fontSize: 14)),
+                      ),
                     ],
                   ),
                   Column(
                     children: [
-                      Text('${widget.model.list[0].weather[0].main}',
-                          style: kPassiveDaysTextStyle.copyWith(fontSize: 14)),
-                      SizedBox(
-                        height: 10,
+                      Expanded(
+                        flex: 1,
+                        child: Text('${widget.model.list[0].weather[0].main}',
+                            style:
+                            kPassiveDaysTextStyle.copyWith(fontSize: 14)),
                       ),
-                      Text('%${widget.model.list[0].main.humidity}',
-                          style: kPassiveDaysTextStyle.copyWith(fontSize: 14)),
+                      Expanded(
+                        flex: 1,
+                        child: Text('%${widget.model.list[0].main.humidity}',
+                            style:
+                            kPassiveDaysTextStyle.copyWith(fontSize: 14)),
+                      ),
                     ],
                   ),
                   Column(
                     children: [
-                      Text('Feels Like',
-                          style: kActiveDaysTextStyle.copyWith(fontSize: 14)),
-                      SizedBox(
-                        height: 10,
+                      Expanded(
+                        flex: 1,
+                        child: Text('Feels Like',
+                            style: kActiveDaysTextStyle.copyWith(fontSize: 14)),
                       ),
-                      Text('Wind',
-                          style: kActiveDaysTextStyle.copyWith(fontSize: 14)),
+                      Expanded(
+                        flex: 1,
+                        child: Text('Wind',
+                            style: kActiveDaysTextStyle.copyWith(fontSize: 14)),
+                      ),
                     ],
                   ),
                   Column(
                     children: [
-                      Text('${widget.model.list[0].main.feels_like.round()}°C',
-                          style: kPassiveDaysTextStyle.copyWith(fontSize: 14)),
-                      SizedBox(
-                        height: 10,
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                            '${widget.model.list[0].main.feels_like.round()}°C',
+                            style:
+                            kPassiveDaysTextStyle.copyWith(fontSize: 14)),
                       ),
-                      Text('${widget.model.list[0].wind.speed} km/s',
-                          style: kPassiveDaysTextStyle.copyWith(fontSize: 14)),
+                      Expanded(
+                        flex: 1,
+                        child: Text('${widget.model.list[0].wind.speed} km/s',
+                            style:
+                            kPassiveDaysTextStyle.copyWith(fontSize: 14)),
+                      ),
                     ],
                   )
                 ],

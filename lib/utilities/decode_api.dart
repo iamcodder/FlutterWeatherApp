@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_icons/weather_icons.dart';
+import 'package:weatherapp/data/gradient_colors.dart';
 import 'package:weatherapp/data/weather_model.dart';
 
 class DecodeApi {
@@ -22,6 +23,11 @@ class DecodeApi {
     _iconList2 = List();
     _iconList3 = List();
     _iconList4 = List();
+    _gradientList0 = List();
+    _gradientList1 = List();
+    _gradientList2 = List();
+    _gradientList3 = List();
+    _gradientList4 = List();
     _decodeDate();
   }
 
@@ -43,44 +49,45 @@ class DecodeApi {
   List<IconData> _iconList3;
   List<IconData> _iconList4;
 
+  List<GradientColors> _gradientList0;
+  List<GradientColors> _gradientList1;
+  List<GradientColors> _gradientList2;
+  List<GradientColors> _gradientList3;
+  List<GradientColors> _gradientList4;
+
   void _decodeDate() {
-    _addList(_timeList0, _degreeList0, _iconList0);
-    _addList(_timeList1, _degreeList1, _iconList1);
-    _addList(_timeList2, _degreeList2, _iconList2);
-    _addList(_timeList3, _degreeList3, _iconList3);
-    _addList(_timeList4, _degreeList4, _iconList4);
+    _addList(_timeList0, _degreeList0, _iconList0, _gradientList0);
+    _addList(_timeList1, _degreeList1, _iconList1, _gradientList1);
+    _addList(_timeList2, _degreeList2, _iconList2, _gradientList2);
+    _addList(_timeList3, _degreeList3, _iconList3, _gradientList3);
+    _addList(_timeList4, _degreeList4, _iconList4, _gradientList4);
   }
 
   int indis = -1;
-  int i = -1;
-  int j = -1;
 
-  void _addList(List dateList, List degreeList, List iconList) {
+  void _addList(
+      List dateList, List degreeList, List iconList, List gradientList) {
     bool isDone = false;
     while (!isDone) {
       indis++;
       String time =
           weatherModel.list[indis].dt_txt.toString().substring(11, 16);
-
-      if (indis == 39 || time == '00:00' && dateList.length != 0) {
-        isDone = true;
+      String temp = weatherModel.list[indis].main.temp.toString().split('.')[0];
+      String iconName = weatherModel.list[indis].weather[0].icon;
+      IconData iconData = _getIcon(iconName);
+      GradientColors gradientColors = _getGradient(iconName);
+      print('time : $time');
+      print('iconName : $iconName');
+      if (time == '03:00' && iconName == '01d') {
+        iconData = _getIcon('01n');
+        gradientColors = _getGradient('01n');
       }
+      if (indis == 39 || time == '00:00' && dateList.length != 0) isDone = true;
       dateList.add(time);
-    }
-
-    while (i < indis) {
-      i++;
-      String temp = weatherModel.list[i].main.temp.toString().split('.')[0];
       degreeList.add(temp);
+      iconList.add(iconData);
+      gradientList.add(gradientColors);
     }
-
-    while (j < indis) {
-      j++;
-      iconList.add(_getIcon(weatherModel.list[j].weather[0].icon));
-    }
-    indis--;
-    i--;
-    j--;
   }
 
   IconData _getIcon(String iconName) {
@@ -136,6 +143,69 @@ class DecodeApi {
         break;
     }
     return icon;
+  }
+
+  GradientColors _getGradient(String iconName) {
+    GradientColors gradientColors;
+    switch (iconName) {
+      case '01d':
+        gradientColors = GradientColors(Color(0xFFfc9562), Color(0xFFc25f67));
+        break;
+      case '01n':
+        gradientColors = GradientColors(Color(0xFF697fb8), Color(0xFF2E485A));
+        break;
+      case '02d':
+        gradientColors = GradientColors(Color(0xFFc25f67), Colors.black54);
+        break;
+      case '02n':
+        gradientColors = GradientColors(Color(0xFF2E485A), Colors.black54);
+        break;
+      case '03d':
+        gradientColors = GradientColors(Colors.black12, Colors.black54);
+        break;
+      case '03n':
+        gradientColors = GradientColors(Colors.black12, Colors.black54);
+        break;
+      case '04d':
+        gradientColors = GradientColors(Colors.black45, Colors.black);
+        break;
+      case '04n':
+        gradientColors = GradientColors(Colors.black45, Colors.black);
+        break;
+      case '9d':
+        gradientColors = GradientColors(Color(0xFF6190E8), Color(0xFFA7BFE8));
+        break;
+      case '9n':
+        gradientColors = GradientColors(Color(0xFF6190E8), Color(0xFFA7BFE8));
+        break;
+      case '10d':
+        gradientColors = GradientColors(Color(0xFFA7BFE8), Color(0xFFc25f67));
+        break;
+      case '10n':
+        gradientColors = GradientColors(Color(0xFFA7BFE8), Color(0xFF2E485A));
+        break;
+      case '11d':
+        gradientColors = GradientColors(Color(0xFFfc9562), Colors.black54);
+        break;
+      case '11n':
+        gradientColors = GradientColors(Color(0xFFfc9562), Colors.black54);
+        break;
+      case '13d':
+        gradientColors = GradientColors(Colors.black12, Colors.black12);
+        break;
+      case '50d':
+        gradientColors = GradientColors(Colors.black12, Colors.black12);
+        break;
+    }
+    return gradientColors;
+  }
+
+  List<GradientColors> getGradientList(int position) {
+    if (position == 0)
+      return _gradientList0;
+    else if (position == 1)
+      return _gradientList1;
+    else if (position == 2) return _gradientList2;
   }
 
   List<String> getTimeList(int position) {

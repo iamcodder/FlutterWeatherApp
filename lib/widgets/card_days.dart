@@ -5,9 +5,11 @@ class CardDays extends StatefulWidget {
   final String time;
   final IconData weatherDegreeIcon;
   final String degree;
-  final Color bdColor;
+  final Color gradientTopColor;
+  final Color gradientBottomColor;
 
-  CardDays(this.time, this.degree, this.weatherDegreeIcon, this.bdColor);
+  CardDays(this.time, this.degree, this.weatherDegreeIcon,
+      this.gradientTopColor, this.gradientBottomColor);
 
   @override
   _CardDaysState createState() => _CardDaysState();
@@ -16,23 +18,29 @@ class CardDays extends StatefulWidget {
 class _CardDaysState extends State<CardDays> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 100,
-      height: 200,
-      child: Card(
-        color: widget.bdColor,
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(widget.time, style: kCardTimeTextStyle),
-              Icon(widget.weatherDegreeIcon, color: Colors.white),
-              Text(widget.degree + '°C', style: kCardDegreeTextStyle),
-            ],
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20.0),
+      child: Container(
+        width: 100,
+        child: Card(
+          elevation: 4,
+          child: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                  widget.gradientTopColor,
+                  widget.gradientBottomColor
+                ])),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(widget.time, style: kCardTimeTextStyle),
+                Icon(widget.weatherDegreeIcon, color: Colors.white),
+                Text(widget.degree + '°C', style: kCardDegreeTextStyle),
+              ],
+            ),
           ),
         ),
       ),
