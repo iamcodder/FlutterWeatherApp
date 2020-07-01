@@ -17,6 +17,7 @@ dependencies:
   flutter_spinkit: "^4.1.2"
   weather_icons: 2.0.1
   fluttertoast: ^4.0.0
+  flutter_sparkline: ^0.1.0
 
 
 dev_dependencies:

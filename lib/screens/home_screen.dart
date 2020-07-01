@@ -7,6 +7,7 @@ import 'package:weatherapp/utilities/decode_api.dart';
 import 'package:weatherapp/widgets/card_days.dart';
 import 'package:weatherapp/widgets/center_text.dart';
 import 'package:weatherapp/widgets/change_color_on_text.dart';
+import 'package:weatherapp/widgets/degree_charts.dart';
 
 class CityScreen extends StatefulWidget {
   CityScreen(this.model);
@@ -146,7 +147,7 @@ class _CityScreenState extends State<CityScreen> {
                   }),
             ),
             Expanded(
-              flex: 1,
+              flex: 2,
               child: Container(
                   child: Align(
                 alignment: Alignment.center,
@@ -160,7 +161,7 @@ class _CityScreenState extends State<CityScreen> {
               )),
             ),
             Expanded(
-              flex: 4,
+              flex: 1,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -211,6 +212,10 @@ class _CityScreenState extends State<CityScreen> {
                 ],
               ),
             ),
+            Expanded(
+              flex: 4,
+              child: DegreeChart(degreeList),
+            )
           ],
         ),
       ),
