@@ -224,7 +224,7 @@ class _CityScreenState extends State<CityScreen> {
                         child: Text(
                             '${widget.model.list[0].main.feels_like.round()}°C',
                             style:
-                            kPassiveDaysTextStyle.copyWith(fontSize: 14)),
+                                kPassiveDaysTextStyle.copyWith(fontSize: 14)),
                       ),
                       Expanded(
                         flex: 1,

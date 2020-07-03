@@ -76,8 +76,6 @@ class DecodeApi {
       String iconName = weatherModel.list[indis].weather[0].icon;
       IconData iconData = _getIcon(iconName);
       GradientColors gradientColors = _getGradient(iconName);
-      print('time : $time');
-      print('iconName : $iconName');
       if (time == '03:00' && iconName == '01d') {
         iconData = _getIcon('01n');
         gradientColors = _getGradient('01n');
@@ -102,14 +100,14 @@ class DecodeApi {
       case '02d':
         icon = WeatherIcons.day_cloudy;
         break;
-      case '02d':
+      case '02n':
         icon = WeatherIcons.night_cloudy;
         break;
       case '03d':
-        icon = WeatherIcons.cloud;
+        icon = WeatherIcons.day_cloudy;
         break;
       case '03n':
-        icon = WeatherIcons.cloud;
+        icon = WeatherIcons.night_cloudy;
         break;
       case '04d':
         icon = WeatherIcons.cloudy;
@@ -193,7 +191,13 @@ class DecodeApi {
       case '13d':
         gradientColors = GradientColors(Colors.black12, Colors.black12);
         break;
+      case '13n':
+        gradientColors = GradientColors(Colors.black12, Colors.black12);
+        break;
       case '50d':
+        gradientColors = GradientColors(Colors.black12, Colors.black12);
+        break;
+      case '50n':
         gradientColors = GradientColors(Colors.black12, Colors.black12);
         break;
     }
