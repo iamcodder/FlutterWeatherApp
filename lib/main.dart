@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light().copyWith(
         appBarTheme: AppBarTheme(
           color: Colors.white,
+          iconTheme: IconThemeData(color: Colors.black),
           elevation: 0,
           centerTitle: true,
           textTheme: TextTheme(

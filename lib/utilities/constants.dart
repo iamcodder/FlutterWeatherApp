@@ -21,6 +21,20 @@ const kActiveDaysTextStyle = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
+const kDaysInfoHeaderActive = TextStyle(
+  fontSize: 22.0,
+  letterSpacing: 4,
+  color: Colors.black,
+  fontWeight: FontWeight.bold,
+);
+
+const kDaysInfoHeaderPassive = TextStyle(
+  fontSize: 22.0,
+  letterSpacing: 4,
+  color: Colors.black26,
+  fontWeight: FontWeight.bold,
+);
+
 const kPassiveDaysTextStyle = TextStyle(
   fontSize: 16.0,
   letterSpacing: 2,

@@ -6,9 +6,9 @@ import 'package:weatherapp/data/weather_model.dart';
 import 'package:weatherapp/utilities/constants.dart';
 import 'package:weatherapp/utilities/decode_api.dart';
 import 'package:weatherapp/widgets/card_days.dart';
-import 'package:weatherapp/widgets/center_text.dart';
 import 'package:weatherapp/widgets/change_color_on_text.dart';
 import 'package:weatherapp/widgets/degree_charts.dart';
+import 'package:weatherapp/widgets/expanded_text.dart';
 
 class CityScreen extends StatefulWidget {
   CityScreen(this.model);
@@ -90,19 +90,9 @@ class _CityScreenState extends State<CityScreen> {
                 size: 56,
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: WidgetCenterText(
-                  '${widget.model.list[0].main.temp.round()}°C',
-                  kTempTextStyle),
-            ),
-            Expanded(
-                flex: 1,
-                child: Align(
-                  alignment: Alignment.center,
-                  child:
-                      WidgetCenterText(widget.model.city.name, kCityTextStyle),
-                )),
+            ExpandedText(
+                '${widget.model.list[0].main.temp.round()}°C', kTempTextStyle),
+            ExpandedText(widget.model.city.name, kCityTextStyle),
             Expanded(
               flex: 1,
               child: Row(
@@ -154,20 +144,8 @@ class _CityScreenState extends State<CityScreen> {
                         gradientList[position].endColor);
                   }),
             ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                  child: Align(
-                alignment: Alignment.center,
-                child: WidgetCenterText(
-                    'Additional Info',
-                    kTempTextStyle.copyWith(
-                      fontSize: 20.0,
-                      letterSpacing: 1,
-                      fontFamily: 'PatuaOne',
-                    )),
-              )),
-            ),
+            ExpandedText(
+                'Additional Info', kTempTextStyle.copyWith(fontSize: 20.0)),
             Expanded(
               flex: 1,
               child: Row(
@@ -175,63 +153,35 @@ class _CityScreenState extends State<CityScreen> {
                 children: [
                   Column(
                     children: [
-                      Expanded(
-                        flex: 1,
-                        child: Text('Main',
-                            style: kActiveDaysTextStyle.copyWith(fontSize: 14)),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Text('Humidity',
-                            style: kActiveDaysTextStyle.copyWith(fontSize: 14)),
-                      ),
+                      ExpandedText(
+                          'Main', kActiveDaysTextStyle.copyWith(fontSize: 14)),
+                      ExpandedText('Humidity',
+                          kActiveDaysTextStyle.copyWith(fontSize: 14)),
                     ],
                   ),
                   Column(
                     children: [
-                      Expanded(
-                        flex: 1,
-                        child: Text('${widget.model.list[0].weather[0].main}',
-                            style:
-                            kPassiveDaysTextStyle.copyWith(fontSize: 14)),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Text('%${widget.model.list[0].main.humidity}',
-                            style:
-                            kPassiveDaysTextStyle.copyWith(fontSize: 14)),
-                      ),
+                      ExpandedText('${widget.model.list[0].weather[0].main}',
+                          kPassiveDaysTextStyle.copyWith(fontSize: 14)),
+                      ExpandedText('%${widget.model.list[0].main.humidity}',
+                          kPassiveDaysTextStyle.copyWith(fontSize: 14)),
                     ],
                   ),
                   Column(
                     children: [
-                      Expanded(
-                        flex: 1,
-                        child: Text('Feels Like',
-                            style: kActiveDaysTextStyle.copyWith(fontSize: 14)),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Text('Wind',
-                            style: kActiveDaysTextStyle.copyWith(fontSize: 14)),
-                      ),
+                      ExpandedText('Feels Like',
+                          kActiveDaysTextStyle.copyWith(fontSize: 14)),
+                      ExpandedText(
+                          'Wind', kActiveDaysTextStyle.copyWith(fontSize: 14)),
                     ],
                   ),
                   Column(
                     children: [
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                            '${widget.model.list[0].main.feels_like.round()}°C',
-                            style:
-                                kPassiveDaysTextStyle.copyWith(fontSize: 14)),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Text('${widget.model.list[0].wind.speed} km/s',
-                            style:
-                            kPassiveDaysTextStyle.copyWith(fontSize: 14)),
-                      ),
+                      ExpandedText(
+                          '${widget.model.list[0].main.feels_like.round()}°C',
+                          kPassiveDaysTextStyle.copyWith(fontSize: 14)),
+                      ExpandedText('${widget.model.list[0].wind.speed} km/s',
+                          kPassiveDaysTextStyle.copyWith(fontSize: 14)),
                     ],
                   )
                 ],
