@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:weather_icons/weather_icons.dart';
 import 'package:weatherapp/data/gradient_colors.dart';
 import 'package:weatherapp/data/weather_model.dart';
+import 'package:weatherapp/screens/detailed_degree_screen.dart';
 import 'package:weatherapp/utilities/constants.dart';
 import 'package:weatherapp/utilities/decode_api.dart';
 import 'package:weatherapp/widgets/card_days.dart';
@@ -32,43 +33,47 @@ class _CityScreenState extends State<CityScreen> {
   List<IconData> iconList;
   List<GradientColors> gradientList;
 
+  int selectedDay;
+
   @override
   void initState() {
+    super.initState();
     weatherModel = widget.model;
     decodeApi = DecodeApi(weatherModel);
-    degreeList = decodeApi.getDegreeList(0);
-    timeList = decodeApi.getTimeList(0);
-    iconList = decodeApi.getIconList(0);
-    gradientList = decodeApi.getGradientList(0);
+    selectedDay = 0;
+    degreeList = decodeApi.getDegreeList(selectedDay);
+    timeList = decodeApi.getTimeList(selectedDay);
+    iconList = decodeApi.getIconList(selectedDay);
+    gradientList = decodeApi.getGradientList(selectedDay);
   }
 
   void clickCardDay(int position) {
     setState(() {
+      selectedDay = position;
       switch (position) {
         case 0:
-          setDayVisiblingColor(position, true, false, false);
+          setDayVisiblingColor(true, false, false);
           break;
         case 1:
-          setDayVisiblingColor(position, false, true, false);
+          setDayVisiblingColor(false, true, false);
           break;
         case 2:
-          setDayVisiblingColor(position, false, false, true);
+          setDayVisiblingColor(false, false, true);
           break;
       }
     });
   }
 
-  void setDayVisiblingColor(int clickedItemPosition, bool todayBool,
-      bool tomorrowBool, bool afterBool) {
+  void setDayVisiblingColor(bool todayBool, bool tomorrowBool, bool afterBool) {
     setState(() {
       todayVisibling = todayBool;
       afterVisibling = afterBool;
       tomorrowVisibling = tomorrowBool;
 
-      degreeList = decodeApi.getDegreeList(clickedItemPosition);
-      timeList = decodeApi.getTimeList(clickedItemPosition);
-      iconList = decodeApi.getIconList(clickedItemPosition);
-      gradientList = decodeApi.getGradientList(clickedItemPosition);
+      degreeList = decodeApi.getDegreeList(selectedDay);
+      timeList = decodeApi.getTimeList(selectedDay);
+      iconList = decodeApi.getIconList(selectedDay);
+      gradientList = decodeApi.getGradientList(selectedDay);
     });
   }
 
@@ -141,7 +146,13 @@ class _CityScreenState extends State<CityScreen> {
                         degreeList[position],
                         iconList[position],
                         gradientList[position].beginColor,
-                        gradientList[position].endColor);
+                        gradientList[position].endColor, () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return DetailedDegreeScreen(
+                            this.selectedDay, position, this.weatherModel);
+                      }));
+                    });
                   }),
             ),
             ExpandedText(

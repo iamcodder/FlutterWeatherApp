@@ -247,4 +247,14 @@ class DecodeApi {
       return _iconList3;
     else if (position == 4) return _iconList4;
   }
+
+  List<IconData> getIconList5Days() {
+    List<IconData> liste = List();
+    liste.add(_iconList0[5]);
+    liste.add(_iconList1[5]);
+    liste.add(_iconList2[5]);
+    liste.add(_iconList3[5]);
+    liste.add(_iconList4[5]);
+    return liste;
+  }
 }
