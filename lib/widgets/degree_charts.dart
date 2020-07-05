@@ -4,12 +4,16 @@ import 'package:flutter_sparkline/flutter_sparkline.dart';
 class DegreeChart extends StatelessWidget {
   List<String> tempList;
   List<double> degreeList;
+  List<String> degreeList2;
 
-  DegreeChart(this.tempList) {
+  DegreeChart(this.tempList, this.degreeList2) {
     degreeList = List();
     for (int i = 0; i < tempList.length; i++) {
       double temp = double.parse(tempList[i]);
       degreeList.add(temp);
+    }
+    if (degreeList.length == 1) {
+      degreeList.add(double.parse(degreeList2[0]));
     }
   }
 

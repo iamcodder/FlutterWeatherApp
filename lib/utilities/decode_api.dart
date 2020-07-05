@@ -93,31 +93,34 @@ class DecodeApi {
     }
   }
 
-  int findTimeValue(String date, int selectedDay) {
+  int findTimeValue(String hour, int selectedDay) {
     bool isFind = false;
     int j = 0;
     int willReturnIndis = 0;
     if (selectedDay != 0) {
       while (!isFind) {
-        willReturnIndis++;
         String parsedDate = weatherModel.list[willReturnIndis].dt_txt
             .toString()
             .substring(11, 16)
             .toString();
-        if (parsedDate == date) {
-          j++;
-          if (j == selectedDay) isFind = true;
+        if (parsedDate == hour) {
+          if (j == selectedDay)
+            isFind = true;
+          else
+            j++;
         }
+        willReturnIndis++;
       }
     } else {
       while (!isFind) {
-        willReturnIndis++;
         String parsedDate = weatherModel.list[willReturnIndis].dt_txt
             .toString()
             .substring(11, 16)
             .toString();
-        if (parsedDate == date) {
+        if (parsedDate == hour) {
           isFind = true;
+        } else {
+          willReturnIndis++;
         }
       }
     }

@@ -29,6 +29,7 @@ class _CityScreenState extends State<CityScreen> {
   DecodeApi decodeApi;
 
   List<String> degreeList;
+  List<String> degreeList2;
   List<String> timeList;
   List<IconData> iconList;
   List<GradientColors> gradientList;
@@ -42,6 +43,7 @@ class _CityScreenState extends State<CityScreen> {
     decodeApi = DecodeApi(weatherModel);
     selectedDay = 0;
     degreeList = decodeApi.getDegreeList(selectedDay);
+    degreeList2 = decodeApi.getDegreeList(selectedDay + 1);
     timeList = decodeApi.getTimeList(selectedDay);
     iconList = decodeApi.getIconList(selectedDay);
     gradientList = decodeApi.getGradientList(selectedDay);
@@ -71,6 +73,7 @@ class _CityScreenState extends State<CityScreen> {
       tomorrowVisibling = tomorrowBool;
 
       degreeList = decodeApi.getDegreeList(selectedDay);
+      degreeList2 = decodeApi.getDegreeList(selectedDay + 1);
       timeList = decodeApi.getTimeList(selectedDay);
       iconList = decodeApi.getIconList(selectedDay);
       gradientList = decodeApi.getGradientList(selectedDay);
@@ -202,7 +205,7 @@ class _CityScreenState extends State<CityScreen> {
             ),
             Expanded(
               flex: 4,
-              child: DegreeChart(degreeList),
+              child: DegreeChart(degreeList, degreeList2),
             )
           ],
         ),
