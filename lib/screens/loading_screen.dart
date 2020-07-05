@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:weatherapp/data/weather_model.dart';
+import 'package:weatherapp/data/fetched_weather_model.dart';
 import 'package:weatherapp/screens/home_screen.dart';
 import 'package:weatherapp/services/location_services.dart';
 import 'package:weatherapp/services/networking.dart';
@@ -26,15 +26,15 @@ class _LoadingScreenState extends State<LoadingScreen> {
     bool serviceEnabled = await locationServices.isServiceEnabled();
     while (!serviceEnabled) {
       serviceEnabled = await locationServices.requestService();
-      showToast(
-          'Please open your location services', Colors.black54, Colors.white);
+      showToast('Please open your location services',
+          bdColor: Colors.black54, txtColor: Colors.white);
     }
 
     bool hasPermission = await locationServices.isPermissionGranted();
     while (!hasPermission) {
       hasPermission = await locationServices.requestPermission();
-      showToast(
-          'Please allow your location services', Colors.black54, Colors.white);
+      showToast('Please allow your location services',
+          bdColor: Colors.black54, txtColor: Colors.white);
     }
 
     await locationServices.getLocationData();
@@ -44,11 +44,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
     bool isApiFetched = await networking.fetchDeneme();
 
     while (!isApiFetched) {
-      showToast('Open your internet connection', Colors.black54, Colors.white);
+      showToast('Open your internet connection',
+          bdColor: Colors.black54, txtColor: Colors.white);
       isApiFetched = await networking.fetchDeneme();
     }
 
-    WeatherModel weatherModel = networking.getWeatherModel;
+    FetchedWeatherModel weatherModel = networking.getWeatherModel;
 
     if (weatherModel.cod == '200') {
       Navigator.pushAndRemoveUntil(context,
@@ -56,8 +57,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
         return CityScreen(weatherModel);
       }), (route) => false);
     } else {
-      showToast('${weatherModel.cod}\n${weatherModel.message}', Colors.red,
-          Colors.white);
+      showToast('${weatherModel.cod}\n${weatherModel.message}',
+          bdColor: Colors.red, txtColor: Colors.white);
       getLocation();
     }
   }

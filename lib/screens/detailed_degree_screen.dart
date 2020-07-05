@@ -1,99 +1,73 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:weather_icons/weather_icons.dart';
+import 'package:weatherapp/data/fetched_weather_model.dart';
 import 'package:weatherapp/data/weather_model.dart';
 import 'package:weatherapp/utilities/constants.dart';
-import 'package:weatherapp/utilities/decode_api.dart';
+import 'package:weatherapp/utilities/decode_model.dart';
+import 'package:weatherapp/utilities/utilities.dart';
 import 'package:weatherapp/widgets/days_of_week.dart';
 import 'package:weatherapp/widgets/expanded_text.dart';
 
 class DetailedDegreeScreen extends StatefulWidget {
   int selectedDay;
-  int selectedTime;
-  WeatherModel weatherModel;
+  int position;
+  String selectedTime;
+  FetchedWeatherModel weatherModel;
 
-  DetailedDegreeScreen(this.selectedDay, this.selectedTime, this.weatherModel);
+  DetailedDegreeScreen(
+      this.selectedDay, this.selectedTime, this.position, this.weatherModel);
 
   @override
   _DetailedDegreeScreenState createState() => _DetailedDegreeScreenState();
 }
 
 class _DetailedDegreeScreenState extends State<DetailedDegreeScreen> {
-  DecodeApi _decodeApi;
-  IconData currenDateIcon;
-  List<IconData> iconList;
-  List<IconData> iconList5Days;
-  List<String> degreeList;
+  List<Color> daysIconsColorList;
+  List<TextStyle> textStyleList;
+  WeatherModel weatherModel;
 
-  DateTime currentDate;
-  String date;
-
-  String currentDayDegree;
-  String currentNightDegree;
-
-  MediaQueryData queryData;
-  double iconSize;
+  int activeDay = 0;
 
   @override
   void initState() {
     super.initState();
-
-    _decodeApi = DecodeApi(widget.weatherModel);
-    iconList = _decodeApi.getIconList(widget.selectedDay);
-    iconList5Days = _decodeApi.getIconList5Days();
-    degreeList = _decodeApi.getDegreeList(widget.selectedDay);
-    getCurrentDate();
-    getCurrentDegree();
-  }
-
-  List<String> dateList;
-
-  void getCurrentDate() {
-    currenDateIcon = iconList[widget.selectedTime];
-    currentDate = DateTime.now();
-
-    int day = 0;
+    int position = parseTime(widget.selectedTime, position: widget.position);
+    if (widget.selectedDay == 0)
+      weatherModel = decodeWeatherModel(widget.weatherModel, position - 1);
     if (widget.selectedDay == 1)
-      day = 1;
-    else if (widget.selectedDay == 2) day = 2;
+      weatherModel = decodeWeatherModel(widget.weatherModel, position + 7);
+    if (widget.selectedDay == 2)
+      weatherModel = decodeWeatherModel(widget.weatherModel, position + 15);
 
-    DateTime dateTime = DateTime(
-        currentDate.year,
-        currentDate.month,
-        currentDate.day + day,
-        currentDate.hour,
-        currentDate.minute,
-        currentDate.second,
-        currentDate.millisecond,
-        currentDate.microsecond);
-
-    date = DateFormat('EEEE').format(dateTime);
-
-    dateList = List();
-
-    for (int i = 0; i < 5; i++) {
-      DateTime dateTime = DateTime(
-          currentDate.year,
-          currentDate.month,
-          currentDate.day + i,
-          currentDate.hour,
-          currentDate.minute,
-          currentDate.second,
-          currentDate.millisecond,
-          currentDate.microsecond);
-      dateList.add(DateFormat('EEEE').format(dateTime).substring(0, 1));
-    }
+    daysIconsColorList = List();
+    addList(daysIconsColorList, Colors.black, Colors.black12);
+    textStyleList = List();
+    addList(textStyleList, kActiveDaysTextStyle, kPassiveDaysTextStyle);
   }
 
-  void getCurrentDegree() {
-    currentDayDegree = degreeList[widget.selectedTime];
-    currentNightDegree = degreeList[degreeList.length - 2];
+  void daysClick(int position) {
+    setState(() {
+      if (activeDay != position) {
+        daysIconsColorList[activeDay] = Colors.black12;
+        textStyleList[activeDay] = kPassiveDaysTextStyle;
+
+        daysIconsColorList[position] = Colors.black;
+        textStyleList[position] = kActiveDaysTextStyle;
+        activeDay = position;
+      }
+    });
+  }
+
+  void addList<T>(List<T> genericList, T t1, T t2) {
+    genericList.add(t1);
+    for (int i = 0; i < 4; i++) {
+      genericList.add(t2);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    queryData = MediaQuery.of(context);
-    iconSize = queryData.size.width / 11;
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -115,55 +89,45 @@ class _DetailedDegreeScreenState extends State<DetailedDegreeScreen> {
                     Expanded(
                       flex: 1,
                       child: Icon(
-                        currenDateIcon,
+                        WeatherIcons.day_sunny,
                         size: 20,
                       ),
                     ),
-                    ExpandedText(date, kDaysInfoHeaderActive, expandedValue: 3),
-                    Expanded(flex: 1, child: SizedBox()),
-                    ExpandedText(currentDayDegree + '°', kDaysInfoHeaderActive,
-                        expandedValue: 1),
-                    ExpandedText(
-                        currentNightDegree + '°', kPassiveDaysTextStyle,
-                        expandedValue: 1),
+                    ExpandedText(weatherModel.main_temp.toString(),
+                        kDaysInfoHeaderActive,
+                        expandedValue: 3),
+                    ExpandedText('22' + '°', kDaysInfoHeaderActive,
+                        expandedValue: 3),
                   ],
                 ),
               ),
               Expanded(
                 flex: 1,
-                child: Row(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Column(
+                    Row(
                       children: [
                         ExpandedText('Main', kActiveDaysTextStyle),
-                        ExpandedText('Feels', kActiveDaysTextStyle),
+                        ExpandedText('Normal', kPassiveDaysTextStyle),
                       ],
                     ),
-                    Column(
+                    Row(
                       children: [
-                        ExpandedText(
-                            '${widget.weatherModel.list[0].weather[0].main}',
-                            kPassiveDaysTextStyle),
-                        ExpandedText(
-                            '${widget.weatherModel.list[0].main.feels_like.round()}°C',
-                            kPassiveDaysTextStyle),
+                        ExpandedText('Feels', kActiveDaysTextStyle),
+                        ExpandedText('20°C', kPassiveDaysTextStyle),
                       ],
                     ),
-                    Column(
+                    Row(
                       children: [
                         ExpandedText('Humidity', kActiveDaysTextStyle),
-                        ExpandedText('Wind', kActiveDaysTextStyle),
+                        ExpandedText('%33', kPassiveDaysTextStyle)
                       ],
                     ),
-                    Column(
+                    Row(
                       children: [
-                        ExpandedText(
-                            '%${widget.weatherModel.list[0].main.humidity}',
-                            kPassiveDaysTextStyle),
-                        ExpandedText(
-                            '${widget.weatherModel.list[0].wind.speed} km/s',
-                            kPassiveDaysTextStyle),
+                        ExpandedText('Wind', kActiveDaysTextStyle),
+                        ExpandedText('22 km/s', kPassiveDaysTextStyle),
                       ],
                     ),
                   ],
@@ -174,11 +138,26 @@ class _DetailedDegreeScreenState extends State<DetailedDegreeScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      DaysOfWeek(dateList[0], iconList5Days[0]),
-                      DaysOfWeek(dateList[1], iconList5Days[1]),
-                      DaysOfWeek(dateList[2], iconList5Days[2]),
-                      DaysOfWeek(dateList[3], iconList5Days[3]),
-                      DaysOfWeek(dateList[4], iconList5Days[4]),
+                      DaysOfWeek(strToSub('Sunday'), WeatherIcons.day_sunny,
+                          daysIconsColorList[0], textStyleList[0], () {
+                            daysClick(0);
+                          }),
+                      DaysOfWeek(strToSub('Monday'), WeatherIcons.day_cloudy,
+                          daysIconsColorList[1], textStyleList[1], () {
+                            daysClick(1);
+                          }),
+                      DaysOfWeek(strToSub('Tuesday'), WeatherIcons.day_rain,
+                          daysIconsColorList[2], textStyleList[2], () {
+                            daysClick(2);
+                          }),
+                      DaysOfWeek(strToSub('Wednesday'), WeatherIcons.day_fog,
+                          daysIconsColorList[3], textStyleList[3], () {
+                            daysClick(3);
+                          }),
+                      DaysOfWeek(strToSub('Thursday'), WeatherIcons.day_hail,
+                          daysIconsColorList[4], textStyleList[4], () {
+                            daysClick(4);
+                          }),
                     ],
                   )),
             ],

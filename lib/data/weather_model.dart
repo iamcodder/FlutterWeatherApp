@@ -1,150 +1,57 @@
 class WeatherModel {
   dynamic cod;
   dynamic message;
-  City city;
-  List<ListModel> list;
-
-  WeatherModel({this.cod, this.message, this.city, this.list});
-
-  factory WeatherModel.fromJson(Map<String, dynamic> json) {
-    var tempList = json['list'] as List;
-    List<ListModel> willReturnList =
-        tempList.map((e) => ListModel.fromJson(e)).toList();
-    return WeatherModel(
-        cod: json['cod'],
-        message: json['message'],
-        city: City.fromJson(json['city']),
-        list: willReturnList
-        //   list: json['list'],
-        );
-  }
-}
-
-class City {
-  dynamic id;
-  dynamic name;
-  Cord coord;
-  dynamic country;
-  dynamic population;
-  dynamic timezone;
-
-  City(
-      {this.id,
-      this.name,
-      this.coord,
-      this.country,
-      this.population,
-      this.timezone});
-
-  factory City.fromJson(Map<String, dynamic> json) {
-    return City(
-      id: json['id'],
-      name: json['name'],
-      coord: Cord.fromJson(json['coord']),
-      country: json['country'],
-      population: json['population'],
-      timezone: json['timezone'],
-    );
-  }
-}
-
-class Cord {
-  double lat;
-  double lon;
-
-  Cord({this.lat, this.lon});
-
-  factory Cord.fromJson(Map<String, dynamic> json) {
-    return Cord(
-      lat: json['lat'],
-      lon: json['lon'],
-    );
-  }
-}
-
-class ListModel {
   dynamic dt_txt;
-  ListModelMain main;
-  List<ListModelWeather> weather;
-  ListModelWind wind;
 
-  ListModel({this.dt_txt, this.main, this.weather, this.wind});
+  dynamic city_id;
+  dynamic city_name;
+  dynamic city_country;
+  dynamic city_population;
+  dynamic city_timezone;
 
-  factory ListModel.fromJson(Map<String, dynamic> json) {
-    var tempList = json['weather'] as List;
-    List<ListModelWeather> willReturnList =
-        tempList.map((e) => ListModelWeather.fromJson(e)).toList();
+  double coord_lat;
+  double coord_lon;
 
-    return ListModel(
-      dt_txt: json['dt_txt'],
-      main: ListModelMain.fromJson(json['main']),
-      weather: willReturnList,
-      wind: ListModelWind.fromJson(json['wind']),
-    );
-  }
-}
+  dynamic main_temp;
+  dynamic main_feels_like;
+  dynamic main_temp_min;
+  dynamic main_temp_max;
+  dynamic main_pressure;
+  dynamic main_sea_level;
+  dynamic main_grnd_level;
+  dynamic main_humidity;
 
-class ListModelMain {
-  dynamic temp;
-  dynamic feels_like;
-  dynamic temp_min;
-  dynamic temp_max;
-  dynamic pressure;
-  dynamic sea_level;
-  dynamic grnd_level;
-  dynamic humidity;
+  dynamic weather_id;
+  dynamic weather_main;
+  dynamic weather_description;
+  dynamic weather_icon;
 
-  ListModelMain({this.temp,
-    this.feels_like,
-    this.temp_min,
-    this.temp_max,
-    this.pressure,
-    this.sea_level,
-    this.grnd_level,
-    this.humidity});
+  dynamic wind_speed;
+  dynamic wind_deg;
 
-  factory ListModelMain.fromJson(Map<String, dynamic> json) {
-    return ListModelMain(
-      temp: json['temp'],
-      feels_like: json['feels_like'],
-      temp_min: json['temp_min'],
-      temp_max: json['temp_max'],
-      pressure: json['pressure'],
-      sea_level: json['sea_level'],
-      grnd_level: json['grnd_level'],
-      humidity: json['humidity'],
-    );
-  }
-}
-
-class ListModelWeather {
-  dynamic id;
-  dynamic main;
-  dynamic description;
-  dynamic icon;
-
-  ListModelWeather({this.id, this.main, this.description, this.icon});
-
-  factory ListModelWeather.fromJson(Map<String, dynamic> json) {
-    return ListModelWeather(
-      id: json['id'],
-      main: json['main'],
-      description: json['description'],
-      icon: json['icon'],
-    );
-  }
-}
-
-class ListModelWind {
-  dynamic speed;
-  dynamic deg;
-
-  ListModelWind({this.speed, this.deg});
-
-  factory ListModelWind.fromJson(Map<String, dynamic> json) {
-    return ListModelWind(
-      speed: json['speed'],
-      deg: json['deg'],
-    );
-  }
+  WeatherModel(
+      this.cod,
+      this.message,
+      this.dt_txt,
+      this.city_id,
+      this.city_name,
+      this.city_country,
+      this.city_population,
+      this.city_timezone,
+      this.coord_lat,
+      this.coord_lon,
+      this.main_temp,
+      this.main_feels_like,
+      this.main_temp_min,
+      this.main_temp_max,
+      this.main_pressure,
+      this.main_sea_level,
+      this.main_grnd_level,
+      this.main_humidity,
+      this.weather_id,
+      this.weather_main,
+      this.weather_description,
+      this.weather_icon,
+      this.wind_speed,
+      this.wind_deg);
 }

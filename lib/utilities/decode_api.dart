@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_icons/weather_icons.dart';
+import 'package:weatherapp/data/fetched_weather_model.dart';
 import 'package:weatherapp/data/gradient_colors.dart';
-import 'package:weatherapp/data/weather_model.dart';
 
 class DecodeApi {
-  WeatherModel weatherModel;
+  FetchedWeatherModel weatherModel;
 
   DecodeApi(this.weatherModel) {
     _timeList0 = List();
@@ -80,11 +80,16 @@ class DecodeApi {
         iconData = _getIcon('01n');
         gradientColors = _getGradient('01n');
       }
-      if (indis == 39 || time == '00:00' && dateList.length != 0) isDone = true;
-      dateList.add(time);
-      degreeList.add(temp);
-      iconList.add(iconData);
-      gradientList.add(gradientColors);
+      print('');
+      if (indis == 39 || time == '00:00' && dateList.length != 0) {
+        isDone = true;
+        indis--;
+      } else {
+        dateList.add(time);
+        degreeList.add(temp);
+        iconList.add(iconData);
+        gradientList.add(gradientColors);
+      }
     }
   }
 
@@ -136,7 +141,13 @@ class DecodeApi {
       case '13d':
         icon = WeatherIcons.snow;
         break;
+      case '13n':
+        icon = WeatherIcons.snow;
+        break;
       case '50d':
+        icon = WeatherIcons.windy;
+        break;
+      case '50n':
         icon = WeatherIcons.windy;
         break;
     }
@@ -246,15 +257,5 @@ class DecodeApi {
     else if (position == 3)
       return _iconList3;
     else if (position == 4) return _iconList4;
-  }
-
-  List<IconData> getIconList5Days() {
-    List<IconData> liste = List();
-    liste.add(_iconList0[5]);
-    liste.add(_iconList1[5]);
-    liste.add(_iconList2[5]);
-    liste.add(_iconList3[5]);
-    liste.add(_iconList4[5]);
-    return liste;
   }
 }

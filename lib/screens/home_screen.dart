@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_icons/weather_icons.dart';
+import 'package:weatherapp/data/fetched_weather_model.dart';
 import 'package:weatherapp/data/gradient_colors.dart';
-import 'package:weatherapp/data/weather_model.dart';
 import 'package:weatherapp/screens/detailed_degree_screen.dart';
 import 'package:weatherapp/utilities/constants.dart';
 import 'package:weatherapp/utilities/decode_api.dart';
@@ -14,7 +14,7 @@ import 'package:weatherapp/widgets/expanded_text.dart';
 class CityScreen extends StatefulWidget {
   CityScreen(this.model);
 
-  final WeatherModel model;
+  final FetchedWeatherModel model;
 
   @override
   _CityScreenState createState() => _CityScreenState();
@@ -25,7 +25,7 @@ class _CityScreenState extends State<CityScreen> {
   bool tomorrowVisibling = false;
   bool afterVisibling = false;
 
-  WeatherModel weatherModel;
+  FetchedWeatherModel weatherModel;
   DecodeApi decodeApi;
 
   List<String> degreeList;
@@ -147,10 +147,12 @@ class _CityScreenState extends State<CityScreen> {
                         iconList[position],
                         gradientList[position].beginColor,
                         gradientList[position].endColor, () {
+                      String time =
+                          decodeApi.getTimeList(selectedDay)[position];
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return DetailedDegreeScreen(
-                            this.selectedDay, position, this.weatherModel);
+                        return DetailedDegreeScreen(this.selectedDay, time,
+                            position, this.weatherModel);
                       }));
                     });
                   }),
