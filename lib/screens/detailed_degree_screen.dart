@@ -25,6 +25,7 @@ class _DetailedDegreeScreenState extends State<DetailedDegreeScreen> {
   List<Color> daysIconsColorList;
   List<TextStyle> textStyleList;
   WeatherModel weatherModel;
+  String formattedDay;
 
   int activeDay = 0;
 
@@ -37,10 +38,17 @@ class _DetailedDegreeScreenState extends State<DetailedDegreeScreen> {
 
     weatherModel = decodeWeatherModel(widget.weatherModel, val);
 
+    getDate();
+
     daysIconsColorList = List();
     addList(daysIconsColorList, Colors.black, Colors.black12);
     textStyleList = List();
     addList(textStyleList, kActiveDaysTextStyle, kPassiveDaysTextStyle);
+  }
+
+  void getDate() {
+    DateTime dateTime = parseDate(weatherModel.dt_txt);
+    formattedDay = getDayName(dateTime);
   }
 
   void daysClick(int position) {
@@ -90,8 +98,7 @@ class _DetailedDegreeScreenState extends State<DetailedDegreeScreen> {
                         size: 20,
                       ),
                     ),
-                    ExpandedText(
-                        weatherModel.dt_txt.toString(), kDaysInfoHeaderActive,
+                    ExpandedText(formattedDay, kDaysInfoHeaderActive,
                         expandedValue: 3),
                     ExpandedText(weatherModel.main_temp.toString() + '°',
                         kDaysInfoHeaderActive,
