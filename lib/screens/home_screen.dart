@@ -151,8 +151,8 @@ class _CityScreenState extends State<CityScreen> {
                           decodeApi.getTimeList(selectedDay)[position];
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return DetailedDegreeScreen(this.selectedDay, time,
-                            position, this.weatherModel);
+                        return DetailedDegreeScreen(
+                            this.selectedDay, time, this.weatherModel);
                       }));
                     });
                   }),

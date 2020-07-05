@@ -20,8 +20,8 @@ void showToast(String msg,
 String strToSub(String text, {int startValue = 0, int endValue = 1}) =>
     text.substring(startValue, endValue);
 
-int parseTime(String date, {int position}) {
-  if (date == '00:00' && position != -1) {
+int parseTime(String date) {
+  if (date == '00:00') {
     return 0;
   } else if (date == '03:00') {
     return 1;
@@ -37,7 +37,5 @@ int parseTime(String date, {int position}) {
     return 6;
   } else if (date == '21:00') {
     return 7;
-  } else if (date == '00:00') {
-    return 8;
   }
 }
