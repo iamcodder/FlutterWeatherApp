@@ -3,7 +3,6 @@ import 'package:weatherapp/data/weather_model.dart';
 
 WeatherModel decodeWeatherModel(
     FetchedWeatherModel fetchedWeatherModel, int position) {
-  if (position == -1) position = 0;
   WeatherModel model = WeatherModel(
       fetchedWeatherModel.cod,
       fetchedWeatherModel.message,
