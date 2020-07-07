@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:weatherapp/data/fetched_weather_model.dart';
 import 'package:weatherapp/data/gradient_colors.dart';
@@ -58,11 +57,11 @@ class _CityScreenState extends State<CityScreen> {
     currentDate = DateFormat('EEEE, d MMM,h:mm a').format(dateTime);
 
     String iconName = widget.model.list[0].weather[0].icon.toString();
-    iconName = iconName == '01d' && timeList[0] == '03:00' ? '01n' : '01d';
+    print('icon : $iconName');
+    iconName = iconName == '01d' && timeList[0] == '03:00' ? '01n' : iconName;
+    print('icon : $iconName');
 
     currentImageName = decodeApi.getImageName(iconName);
-    gradientColors = decodeApi.getGradient(iconName);
-    print('icon name:$iconName');
   }
 
   void clickCardDay(int position) {
@@ -104,7 +103,7 @@ class _CityScreenState extends State<CityScreen> {
           'Weather Forecast',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: gradientColors.beginColor,
+        backgroundColor: gradientList[0].beginColor,
       ),
       body: SafeArea(
         child: Container(
@@ -113,8 +112,8 @@ class _CityScreenState extends State<CityScreen> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                gradientColors.beginColor,
-                gradientColors.endColor
+                gradientList[0].beginColor,
+                gradientList[0].endColor
               ])),
           child: Column(
             children: [
@@ -132,8 +131,11 @@ class _CityScreenState extends State<CityScreen> {
                   textColor: Colors.white54, expandedValue: 1),
               Expanded(
                 flex: 6,
-                child: Image(
-                  image: Svg(currentImageName, width: 200, height: 200),
+                child: Container(
+                  padding: EdgeInsets.all(20),
+                  child: Image.asset(
+                    currentImageName,
+                  ),
                 ),
               ),
               ExpandedText(

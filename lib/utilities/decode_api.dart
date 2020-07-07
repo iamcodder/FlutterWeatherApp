@@ -249,7 +249,7 @@ class DecodeApi {
         name = 'mist';
         break;
     }
-    name = 'images/$name.svg';
+    name = 'images/$name.png';
     return name;
   }
 
