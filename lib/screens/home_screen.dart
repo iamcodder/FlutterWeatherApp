@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:weather_icons/weather_icons.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+import 'package:intl/intl.dart';
 import 'package:weatherapp/data/fetched_weather_model.dart';
 import 'package:weatherapp/data/gradient_colors.dart';
 import 'package:weatherapp/screens/detailed_degree_screen.dart';
 import 'package:weatherapp/utilities/constants.dart';
 import 'package:weatherapp/utilities/decode_api.dart';
+import 'package:weatherapp/utilities/utilities.dart';
 import 'package:weatherapp/widgets/card_days.dart';
 import 'package:weatherapp/widgets/change_color_on_text.dart';
 import 'package:weatherapp/widgets/degree_charts.dart';
@@ -34,6 +36,10 @@ class _CityScreenState extends State<CityScreen> {
   List<IconData> iconList;
   List<GradientColors> gradientList;
 
+  String currentDate;
+  String currentImageName;
+  GradientColors gradientColors;
+
   int selectedDay;
 
   @override
@@ -47,6 +53,16 @@ class _CityScreenState extends State<CityScreen> {
     timeList = decodeApi.getTimeList(selectedDay);
     iconList = decodeApi.getIconList(selectedDay);
     gradientList = decodeApi.getGradientList(selectedDay);
+
+    DateTime dateTime = parseDate(weatherModel.list[0].dt_txt);
+    currentDate = DateFormat('EEEE, d MMM,h:mm a').format(dateTime);
+
+    String iconName = widget.model.list[0].weather[0].icon.toString();
+    iconName = iconName == '01d' && timeList[0] == '03:00' ? '01n' : '01d';
+
+    currentImageName = decodeApi.getImageName(iconName);
+    gradientColors = decodeApi.getGradient(iconName);
+    print('icon name:$iconName');
   }
 
   void clickCardDay(int position) {
@@ -84,130 +100,110 @@ class _CityScreenState extends State<CityScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Weather Forecast'),
+        title: Text(
+          'Weather Forecast',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: gradientColors.beginColor,
       ),
-      body: Container(
-        color: Colors.white,
-        child: Column(
-          children: [
-            Expanded(
-              flex: 2,
-              child: Icon(
-                WeatherIcons.day_sunny,
-                color: Colors.deepOrange,
-                size: 56,
+      body: SafeArea(
+        child: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                gradientColors.beginColor,
+                gradientColors.endColor
+              ])),
+          child: Column(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Icon(
+                  Icons.location_on,
+                  size: 30,
+                  color: Colors.white,
+                ),
               ),
-            ),
-            ExpandedText(
-                '${widget.model.list[0].main.temp.round()}°C', kTempTextStyle),
-            ExpandedText(widget.model.city.name, kCityTextStyle),
-            Expanded(
-              flex: 1,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GestureDetector(
-                    child: ChangeColorOnText(
-                        'Today', todayVisibling, kActiveDaysTextStyle),
-                    onTap: () {
-                      setState(() {
-                        clickCardDay(0);
-                      });
-                    },
-                  ),
-                  GestureDetector(
-                    child: ChangeColorOnText(
-                        'Tomorrow', tomorrowVisibling, kPassiveDaysTextStyle),
-                    onTap: () {
-                      setState(() {
-                        clickCardDay(1);
-                      });
-                    },
-                  ),
-                  GestureDetector(
-                    child: ChangeColorOnText(
-                        'After', afterVisibling, kPassiveDaysTextStyle),
-                    onTap: () {
-                      setState(() {
-                        clickCardDay(2);
-                      });
-                    },
-                  ),
-                ],
+              ExpandedText(widget.model.city.name, kCityTextStyle,
+                  textColor: Colors.white, expandedValue: 1),
+              ExpandedText(currentDate, kCityTextStyle,
+                  textColor: Colors.white54, expandedValue: 1),
+              Expanded(
+                flex: 6,
+                child: Image(
+                  image: Svg(currentImageName, width: 200, height: 200),
+                ),
               ),
-            ),
-            Expanded(
-              flex: 4,
-              child: ListView.builder(
-                  padding: EdgeInsets.symmetric(horizontal: 6.0),
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemCount: timeList.length,
-                  itemBuilder: (BuildContext context, int position) {
-                    return CardDays(
-                        timeList[position],
-                        degreeList[position],
-                        iconList[position],
-                        gradientList[position].beginColor,
-                        gradientList[position].endColor, () {
-                      String time =
-                          decodeApi.getTimeList(selectedDay)[position];
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return DetailedDegreeScreen(
-                            this.selectedDay, time, this.weatherModel);
-                      }));
-                    });
-                  }),
-            ),
-            ExpandedText(
-                'Additional Info', kTempTextStyle.copyWith(fontSize: 20.0)),
-            Expanded(
-              flex: 1,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    children: [
-                      ExpandedText(
-                          'Main', kActiveDaysTextStyle.copyWith(fontSize: 14)),
-                      ExpandedText('Humidity',
-                          kActiveDaysTextStyle.copyWith(fontSize: 14)),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      ExpandedText('${widget.model.list[0].weather[0].main}',
-                          kPassiveDaysTextStyle.copyWith(fontSize: 14)),
-                      ExpandedText('%${widget.model.list[0].main.humidity}',
-                          kPassiveDaysTextStyle.copyWith(fontSize: 14)),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      ExpandedText('Feels Like',
-                          kActiveDaysTextStyle.copyWith(fontSize: 14)),
-                      ExpandedText(
-                          'Wind', kActiveDaysTextStyle.copyWith(fontSize: 14)),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      ExpandedText(
-                          '${widget.model.list[0].main.feels_like.round()}°C',
-                          kPassiveDaysTextStyle.copyWith(fontSize: 14)),
-                      ExpandedText('${widget.model.list[0].wind.speed} km/s',
-                          kPassiveDaysTextStyle.copyWith(fontSize: 14)),
-                    ],
-                  )
-                ],
+              ExpandedText(
+                  '${widget.model.list[0].main.temp.round()}°C', kTempTextStyle,
+                  textColor: Colors.white),
+              Expanded(
+                flex: 1,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    GestureDetector(
+                      child: ChangeColorOnText(
+                          'Today', todayVisibling, kActiveDaysTextStyle),
+                      onTap: () {
+                        setState(() {
+                          clickCardDay(0);
+                        });
+                      },
+                    ),
+                    GestureDetector(
+                      child: ChangeColorOnText(
+                          'Tomorrow', tomorrowVisibling, kPassiveDaysTextStyle),
+                      onTap: () {
+                        setState(() {
+                          clickCardDay(1);
+                        });
+                      },
+                    ),
+                    GestureDetector(
+                      child: ChangeColorOnText(
+                          'After', afterVisibling, kPassiveDaysTextStyle),
+                      onTap: () {
+                        setState(() {
+                          clickCardDay(2);
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              flex: 4,
-              child: DegreeChart(degreeList, degreeList2),
-            )
-          ],
+              Expanded(
+                flex: 4,
+                child: ListView.builder(
+                    padding: EdgeInsets.symmetric(horizontal: 6.0),
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemCount: timeList.length,
+                    itemBuilder: (BuildContext context, int position) {
+                      return CardDays(
+                          timeList[position],
+                          degreeList[position],
+                          iconList[position],
+                          gradientList[position].beginColor,
+                          gradientList[position].endColor, () {
+                        String time =
+                            decodeApi.getTimeList(selectedDay)[position];
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return DetailedDegreeScreen(
+                              this.selectedDay, time, this.weatherModel);
+                        }));
+                      });
+                    }),
+              ),
+              Expanded(
+                flex: 4,
+                child: DegreeChart(degreeList, degreeList2),
+              )
+            ],
+          ),
         ),
       ),
     );

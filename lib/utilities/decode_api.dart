@@ -75,10 +75,10 @@ class DecodeApi {
       String temp = weatherModel.list[indis].main.temp.toString().split('.')[0];
       String iconName = weatherModel.list[indis].weather[0].icon;
       IconData iconData = _getIcon(iconName);
-      GradientColors gradientColors = _getGradient(iconName);
+      GradientColors gradientColors = getGradient(iconName);
       if (time == '03:00' && iconName == '01d') {
         iconData = _getIcon('01n');
-        gradientColors = _getGradient('01n');
+        gradientColors = getGradient('01n');
       }
       print('');
       if (indis == 39 || time == '00:00' && dateList.length != 0) {
@@ -191,7 +191,69 @@ class DecodeApi {
     return icon;
   }
 
-  GradientColors _getGradient(String iconName) {
+  String getImageName(String iconName) {
+    String name;
+    switch (iconName) {
+      case '01d':
+        name = 'clear_sky_01d';
+        break;
+      case '01n':
+        name = 'clear_sky_01n';
+        break;
+      case '02d':
+        name = 'few_cloud_02d';
+        break;
+      case '02n':
+        name = 'few_cloud_02n';
+        break;
+      case '03d':
+        name = 'scattered_cloud';
+        break;
+      case '03n':
+        name = 'scattered_cloud';
+        break;
+      case '04d':
+        name = 'broken_cloud';
+        break;
+      case '04n':
+        name = 'broken_cloud';
+        break;
+      case '9d':
+        name = 'shower_rain';
+        break;
+      case '9n':
+        name = 'shower_rain';
+        break;
+      case '10d':
+        name = 'rain_10d';
+        break;
+      case '10n':
+        name = 'rain_10n';
+        break;
+      case '11d':
+        name = 'thunderstorm';
+        break;
+      case '11n':
+        name = 'thunderstorm';
+        break;
+      case '13d':
+        name = 'snow';
+        break;
+      case '13n':
+        name = 'snow';
+        break;
+      case '50d':
+        name = 'mist';
+        break;
+      case '50n':
+        name = 'mist';
+        break;
+    }
+    name = 'images/$name.svg';
+    return name;
+  }
+
+  GradientColors getGradient(String iconName) {
     GradientColors gradientColors;
     switch (iconName) {
       case '01d':

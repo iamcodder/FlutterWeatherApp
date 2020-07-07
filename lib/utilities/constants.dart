@@ -22,7 +22,7 @@ const kActiveDaysTextStyle = TextStyle(
 );
 
 const kDaysInfoHeaderActive = TextStyle(
-  fontSize: 22.0,
+  fontSize: 18.0,
   letterSpacing: 4,
   color: Colors.black,
   fontWeight: FontWeight.bold,

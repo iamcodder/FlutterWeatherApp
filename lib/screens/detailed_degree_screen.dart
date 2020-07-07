@@ -98,11 +98,17 @@ class _DetailedDegreeScreenState extends State<DetailedDegreeScreen> {
                         size: 20,
                       ),
                     ),
+                    ExpandedText(
+                        '${widget.selectedTime} ', kDaysInfoHeaderActive,
+                        expandedValue: 2),
                     ExpandedText(formattedDay, kDaysInfoHeaderActive,
-                        expandedValue: 3),
-                    ExpandedText(weatherModel.main_temp.toString() + '°',
+                        expandedValue: 2),
+                    ExpandedText(
+                        double.parse(weatherModel.main_temp.toString())
+                                .toStringAsFixed(0) +
+                            '°C',
                         kDaysInfoHeaderActive,
-                        expandedValue: 3),
+                        expandedValue: 2),
                   ],
                 ),
               ),

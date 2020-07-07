@@ -8,9 +8,9 @@ class ChangeColorOnText extends StatefulWidget {
 
   ChangeColorOnText(this.message, this.isActive, this.style) {
     if (isActive)
-      txtColor = Colors.black;
+      txtColor = Colors.white;
     else
-      txtColor = Colors.black26;
+      txtColor = Colors.white54;
   }
 
   @override
