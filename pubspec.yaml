@@ -19,7 +19,7 @@ dependencies:
   fluttertoast: ^4.0.0
   flutter_sparkline: ^0.1.0
   intl: ^0.16.0
-
+  fl_chart: ^0.10.1
 
 dev_dependencies:
   flutter_test:

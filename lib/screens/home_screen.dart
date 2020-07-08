@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:weatherapp/data/fetched_weather_model.dart';
 import 'package:weatherapp/data/gradient_colors.dart';
-import 'package:weatherapp/screens/detailed_degree_screen.dart';
+import 'package:weatherapp/data/weather_model.dart';
 import 'package:weatherapp/utilities/constants.dart';
 import 'package:weatherapp/utilities/decode_api.dart';
 import 'package:weatherapp/utilities/utilities.dart';
-import 'package:weatherapp/widgets/card_days.dart';
 import 'package:weatherapp/widgets/change_color_on_text.dart';
-import 'package:weatherapp/widgets/degree_charts.dart';
+import 'package:weatherapp/widgets/chart.dart';
 import 'package:weatherapp/widgets/expanded_text.dart';
 
 class CityScreen extends StatefulWidget {
@@ -26,8 +25,9 @@ class _CityScreenState extends State<CityScreen> {
   bool tomorrowVisibling = false;
   bool afterVisibling = false;
 
-  FetchedWeatherModel weatherModel;
+  FetchedWeatherModel fetchedWeatherModel;
   DecodeApi decodeApi;
+  WeatherModel decodedWeatherModel;
 
   List<String> degreeList;
   List<String> degreeList2;
@@ -44,8 +44,8 @@ class _CityScreenState extends State<CityScreen> {
   @override
   void initState() {
     super.initState();
-    weatherModel = widget.model;
-    decodeApi = DecodeApi(weatherModel);
+    fetchedWeatherModel = widget.model;
+    decodeApi = DecodeApi(fetchedWeatherModel);
     selectedDay = 0;
     degreeList = decodeApi.getDegreeList(selectedDay);
     degreeList2 = decodeApi.getDegreeList(selectedDay + 1);
@@ -53,14 +53,14 @@ class _CityScreenState extends State<CityScreen> {
     iconList = decodeApi.getIconList(selectedDay);
     gradientList = decodeApi.getGradientList(selectedDay);
 
-    DateTime dateTime = parseDate(weatherModel.list[0].dt_txt);
+    DateTime dateTime = parseDate(fetchedWeatherModel.list[0].dt_txt);
     currentDate = DateFormat('EEEE, d MMM,h:mm a').format(dateTime);
 
     String iconName = widget.model.list[0].weather[0].icon.toString();
-    print('icon : $iconName');
     iconName = iconName == '01d' && timeList[0] == '03:00' ? '01n' : iconName;
-    print('icon : $iconName');
 
+    gradientColors =
+        GradientColors(gradientList[0].beginColor, gradientList[0].endColor);
     currentImageName = decodeApi.getImageName(iconName);
   }
 
@@ -103,7 +103,7 @@ class _CityScreenState extends State<CityScreen> {
           'Weather Forecast',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: gradientList[0].beginColor,
+        backgroundColor: gradientColors.beginColor,
       ),
       body: SafeArea(
         child: Container(
@@ -112,8 +112,8 @@ class _CityScreenState extends State<CityScreen> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                gradientList[0].beginColor,
-                gradientList[0].endColor
+                gradientColors.beginColor,
+                gradientColors.endColor
               ])),
           child: Column(
             children: [
@@ -132,15 +132,18 @@ class _CityScreenState extends State<CityScreen> {
               Expanded(
                 flex: 6,
                 child: Container(
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.all(6),
                   child: Image.asset(
                     currentImageName,
                   ),
                 ),
               ),
               ExpandedText(
-                  '${widget.model.list[0].main.temp.round()}°C', kTempTextStyle,
-                  textColor: Colors.white),
+                '${widget.model.list[0].main.temp.round()}°C',
+                kTempTextStyle,
+                textColor: Colors.white,
+                expandedValue: 2,
+              ),
               Expanded(
                 flex: 1,
                 child: Row(
@@ -178,32 +181,8 @@ class _CityScreenState extends State<CityScreen> {
               ),
               Expanded(
                 flex: 4,
-                child: ListView.builder(
-                    padding: EdgeInsets.symmetric(horizontal: 6.0),
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    itemCount: timeList.length,
-                    itemBuilder: (BuildContext context, int position) {
-                      return CardDays(
-                          timeList[position],
-                          degreeList[position],
-                          iconList[position],
-                          gradientList[position].beginColor,
-                          gradientList[position].endColor, () {
-                        String time =
-                            decodeApi.getTimeList(selectedDay)[position];
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return DetailedDegreeScreen(
-                              this.selectedDay, time, this.weatherModel);
-                        }));
-                      });
-                    }),
+                child: BarChartSample1(fetchedWeatherModel, selectedDay),
               ),
-              Expanded(
-                flex: 4,
-                child: DegreeChart(degreeList, degreeList2),
-              )
             ],
           ),
         ),

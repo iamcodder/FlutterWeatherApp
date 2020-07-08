@@ -28,6 +28,11 @@ class DecodeApi {
     _gradientList2 = List();
     _gradientList3 = List();
     _gradientList4 = List();
+    _descriptionList0 = List();
+    _descriptionList1 = List();
+    _descriptionList2 = List();
+    _descriptionList3 = List();
+    _descriptionList4 = List();
     _decodeDate();
   }
 
@@ -36,6 +41,12 @@ class DecodeApi {
   List<String> _timeList2;
   List<String> _timeList3;
   List<String> _timeList4;
+
+  List<String> _descriptionList0;
+  List<String> _descriptionList1;
+  List<String> _descriptionList2;
+  List<String> _descriptionList3;
+  List<String> _descriptionList4;
 
   List<String> _degreeList0;
   List<String> _degreeList1;
@@ -56,23 +67,30 @@ class DecodeApi {
   List<GradientColors> _gradientList4;
 
   void _decodeDate() {
-    _addList(_timeList0, _degreeList0, _iconList0, _gradientList0);
-    _addList(_timeList1, _degreeList1, _iconList1, _gradientList1);
-    _addList(_timeList2, _degreeList2, _iconList2, _gradientList2);
-    _addList(_timeList3, _degreeList3, _iconList3, _gradientList3);
-    _addList(_timeList4, _degreeList4, _iconList4, _gradientList4);
+    _addList(_timeList0, _degreeList0, _iconList0, _gradientList0,
+        _descriptionList0);
+    _addList(_timeList1, _degreeList1, _iconList1, _gradientList1,
+        _descriptionList1);
+    _addList(_timeList2, _degreeList2, _iconList2, _gradientList2,
+        _descriptionList2);
+    _addList(_timeList3, _degreeList3, _iconList3, _gradientList3,
+        _descriptionList3);
+    _addList(_timeList4, _degreeList4, _iconList4, _gradientList4,
+        _descriptionList4);
   }
 
   int indis = -1;
 
-  void _addList(
-      List dateList, List degreeList, List iconList, List gradientList) {
+  void _addList(List dateList, List degreeList, List iconList,
+      List gradientList, List descriptionList) {
     bool isDone = false;
     while (!isDone) {
       indis++;
       String time =
           weatherModel.list[indis].dt_txt.toString().substring(11, 16);
       String temp = weatherModel.list[indis].main.temp.toString().split('.')[0];
+      String description =
+          weatherModel.list[indis].weather[0].description.toString();
       String iconName = weatherModel.list[indis].weather[0].icon;
       IconData iconData = _getIcon(iconName);
       GradientColors gradientColors = getGradient(iconName);
@@ -89,6 +107,7 @@ class DecodeApi {
         degreeList.add(temp);
         iconList.add(iconData);
         gradientList.add(gradientColors);
+        descriptionList.add(description);
       }
     }
   }
@@ -344,6 +363,18 @@ class DecodeApi {
     else if (position == 3)
       return _degreeList3;
     else if (position == 4) return _degreeList4;
+  }
+
+  List<String> getDescriptionList(int position) {
+    if (position == 0)
+      return _descriptionList0;
+    else if (position == 1)
+      return _descriptionList1;
+    else if (position == 2)
+      return _descriptionList2;
+    else if (position == 3)
+      return _descriptionList3;
+    else if (position == 4) return _descriptionList4;
   }
 
   List<IconData> getIconList(int position) {
