@@ -42,7 +42,7 @@ class BarChartSample1State extends State<BarChartSample1> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           BarChart(
             mainBarData(),

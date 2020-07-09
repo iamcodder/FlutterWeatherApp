@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ExpandedText extends StatelessWidget {
@@ -17,6 +18,7 @@ class ExpandedText extends StatelessWidget {
         child: Text(
           '$txt',
           style: textStyle.copyWith(color: textColor),
+          textAlign: TextAlign.center,
         ),
       ),
     );

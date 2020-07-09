@@ -130,7 +130,7 @@ class _CityScreenState extends State<CityScreen> {
               ExpandedText(currentDate, kCityTextStyle,
                   textColor: Colors.white54, expandedValue: 1),
               Expanded(
-                flex: 6,
+                flex: 5,
                 child: Container(
                   padding: EdgeInsets.all(6),
                   child: Image.asset(
@@ -139,7 +139,9 @@ class _CityScreenState extends State<CityScreen> {
                 ),
               ),
               ExpandedText(
-                '${widget.model.list[0].main.temp.round()}°C',
+                '${widget.model.list[0].main.temp.round()}°C' +
+                    '\n${widget.model.list[0].weather[0].description.toString()}' +
+                    '\n',
                 kTempTextStyle,
                 textColor: Colors.white,
                 expandedValue: 2,
