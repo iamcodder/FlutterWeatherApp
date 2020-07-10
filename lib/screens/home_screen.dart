@@ -4,13 +4,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:weatherapp/data/fetched_weather_model.dart';
 import 'package:weatherapp/data/gradient_colors.dart';
-import 'package:weatherapp/screens/map_screen.dart';
+import 'package:weatherapp/services/location_services.dart';
 import 'package:weatherapp/utilities/constants.dart';
 import 'package:weatherapp/utilities/decode_api.dart';
 import 'package:weatherapp/utilities/utilities.dart';
 import 'package:weatherapp/widgets/change_color_on_text.dart';
 import 'package:weatherapp/widgets/chart.dart';
 import 'package:weatherapp/widgets/expanded_text.dart';
+
+import 'map_screen.dart';
 
 class CityScreen extends StatefulWidget {
   CityScreen(this.model);
@@ -37,6 +39,9 @@ class _CityScreenState extends State<CityScreen> {
 
   String currentDate;
   String currentImageName;
+  String currentCity;
+  dynamic currentDegree;
+  String currentDescription;
   GradientColors gradientColors;
 
   int selectedDay;
@@ -44,7 +49,27 @@ class _CityScreenState extends State<CityScreen> {
   @override
   void initState() {
     super.initState();
-    fetchedWeatherModel = widget.model;
+    initSettings();
+  }
+
+  void initSettings(
+      {bool isRefresh = false, double latitude, double longitude}) async {
+    FetchedWeatherModel tempModel;
+
+    if (isRefresh) {
+      LocationServices locationServices = LocationServices();
+      tempModel = await locationServices.getLocation(
+          isLatSetted: true, latitude: latitude, longitude: longitude);
+
+      while (tempModel.cod != '200') {
+        showToast('${tempModel.cod}\n${tempModel.message}',
+            bdColor: Colors.red, txtColor: Colors.white);
+        tempModel = await locationServices.getLocation();
+      }
+    }
+
+    fetchedWeatherModel = isRefresh == true ? tempModel : widget.model;
+
     decodeApi = DecodeApi(fetchedWeatherModel);
     selectedDay = 0;
     degreeList = decodeApi.getDegreeList(selectedDay);
@@ -53,15 +78,38 @@ class _CityScreenState extends State<CityScreen> {
     iconList = decodeApi.getIconList(selectedDay);
     gradientList = decodeApi.getGradientList(selectedDay);
 
-    DateTime dateTime = parseDate(fetchedWeatherModel.list[0].dt_txt);
-    currentDate = DateFormat('EEEE, d MMM,h:mm a').format(dateTime);
+    setNewData();
+  }
 
-    String iconName = widget.model.list[0].weather[0].icon.toString();
-    iconName = iconName == '01d' && timeList[0] == '03:00' ? '01n' : iconName;
+  void setNewData() {
+    setState(() {
+      DateTime dateTime = parseDate(fetchedWeatherModel.list[0].dt_txt);
+      currentDate = DateFormat('EEEE, d MMM,h:mm a').format(dateTime);
+      String iconName = fetchedWeatherModel.list[0].weather[0].icon.toString();
+      iconName = iconName == '01d' && timeList[0] == '03:00' ? '01n' : iconName;
 
-    gradientColors =
-        GradientColors(gradientList[0].beginColor, gradientList[0].endColor);
-    currentImageName = decodeApi.getImageName(iconName);
+      gradientColors =
+          GradientColors(gradientList[0].beginColor, gradientList[0].endColor);
+      currentImageName = decodeApi.getImageName(iconName);
+
+      currentCity = fetchedWeatherModel.city.name;
+      currentDegree = fetchedWeatherModel.list[0].main.temp;
+      currentDescription = fetchedWeatherModel.list[0].weather[0].description;
+    });
+  }
+
+  void changedLocation() async {
+    LatLng latLng = await Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) {
+      return MapScreen(fetchedWeatherModel.city.coord.lat,
+          fetchedWeatherModel.city.coord.lon);
+    }));
+    if (latLng != null) {
+      initSettings(
+          isRefresh: true,
+          latitude: latLng.latitude,
+          longitude: latLng.longitude);
+    }
   }
 
   void clickCardDay(int position) {
@@ -105,29 +153,6 @@ class _CityScreenState extends State<CityScreen> {
         ),
         backgroundColor: gradientColors.beginColor,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: gradientColors.beginColor,
-        onTap: (value) async {
-          if (value == 1) {
-            LatLng latLng = await Navigator.push(context,
-                MaterialPageRoute(builder: (BuildContext context) {
-              return MapScreen(fetchedWeatherModel.city.coord.lat,
-                  fetchedWeatherModel.city.coord.lon);
-            }));
-            print('LATİTUDE : ${latLng.latitude}');
-            print('LONGİTUDE : ${latLng.longitude}');
-          }
-        },
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home, color: Colors.white54),
-              title: Text('Home', style: TextStyle(color: Colors.white54))),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.location_on, color: Colors.white54),
-              title: Text('Change Location',
-                  style: TextStyle(color: Colors.white54))),
-        ],
-      ),
       body: SafeArea(
         child: Container(
           decoration: BoxDecoration(
@@ -142,13 +167,14 @@ class _CityScreenState extends State<CityScreen> {
             children: [
               Expanded(
                 flex: 1,
-                child: Icon(
-                  Icons.location_on,
-                  size: 30,
-                  color: Colors.white,
+                child: GestureDetector(
+                  onTap: () async {
+                    changedLocation();
+                  },
+                  child: Icon(Icons.location_on, size: 30, color: Colors.white),
                 ),
               ),
-              ExpandedText(widget.model.city.name, kCityTextStyle,
+              ExpandedText(currentCity, kCityTextStyle,
                   textColor: Colors.white, expandedValue: 1),
               ExpandedText(currentDate, kCityTextStyle,
                   textColor: Colors.white54, expandedValue: 1),
@@ -156,14 +182,13 @@ class _CityScreenState extends State<CityScreen> {
                 flex: 5,
                 child: Container(
                   padding: EdgeInsets.all(6),
-                  child: Image.asset(
-                    currentImageName,
-                  ),
+                  child: Image.asset(currentImageName),
                 ),
               ),
               ExpandedText(
-                '${widget.model.list[0].main.temp.round()}°C' +
-                    '\n${widget.model.list[0].weather[0].description.toString()}' +
+                '${double.parse(currentDegree.toString()).round()}°C' +
+                    '\n${fetchedWeatherModel.list[0].weather[0].description
+                        .toString()}' +
                     '\n',
                 kTempTextStyle,
                 textColor: Colors.white,

@@ -4,18 +4,9 @@ import 'package:weatherapp/data/fetched_weather_model.dart';
 import 'package:weatherapp/utilities/decode_api.dart';
 
 class BarChartSample1 extends StatefulWidget {
-  final List<Color> availableColors = [
-    Colors.purpleAccent,
-    Colors.yellow,
-    Colors.lightBlue,
-    Colors.orange,
-    Colors.pink,
-    Colors.redAccent,
-  ];
-
   BarChartSample1(this.fetchedWeatherModel, this.daysOfWeekPosition);
 
-  final FetchedWeatherModel fetchedWeatherModel;
+  FetchedWeatherModel fetchedWeatherModel;
   int daysOfWeekPosition;
 
   @override
@@ -34,21 +25,16 @@ class BarChartSample1State extends State<BarChartSample1> {
   @override
   void initState() {
     super.initState();
-    decodeApi = DecodeApi(widget.fetchedWeatherModel);
   }
 
   @override
   Widget build(BuildContext context) {
+    decodeApi = DecodeApi(widget.fetchedWeatherModel);
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          BarChart(
-            mainBarData(),
-            swapAnimationDuration: animDuration,
-          ),
-        ],
+      child: BarChart(
+        mainBarData(),
+        swapAnimationDuration: animDuration,
       ),
     );
   }
