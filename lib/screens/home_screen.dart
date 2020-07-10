@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:weatherapp/data/fetched_weather_model.dart';
 import 'package:weatherapp/data/gradient_colors.dart';
-import 'package:weatherapp/data/weather_model.dart';
+import 'package:weatherapp/screens/map_screen.dart';
 import 'package:weatherapp/utilities/constants.dart';
 import 'package:weatherapp/utilities/decode_api.dart';
 import 'package:weatherapp/utilities/utilities.dart';
@@ -27,7 +28,6 @@ class _CityScreenState extends State<CityScreen> {
 
   FetchedWeatherModel fetchedWeatherModel;
   DecodeApi decodeApi;
-  WeatherModel decodedWeatherModel;
 
   List<String> degreeList;
   List<String> degreeList2;
@@ -104,6 +104,29 @@ class _CityScreenState extends State<CityScreen> {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: gradientColors.beginColor,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: gradientColors.beginColor,
+        onTap: (value) async {
+          if (value == 1) {
+            LatLng latLng = await Navigator.push(context,
+                MaterialPageRoute(builder: (BuildContext context) {
+              return MapScreen(fetchedWeatherModel.city.coord.lat,
+                  fetchedWeatherModel.city.coord.lon);
+            }));
+            print('LATİTUDE : ${latLng.latitude}');
+            print('LONGİTUDE : ${latLng.longitude}');
+          }
+        },
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home, color: Colors.white54),
+              title: Text('Home', style: TextStyle(color: Colors.white54))),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.location_on, color: Colors.white54),
+              title: Text('Change Location',
+                  style: TextStyle(color: Colors.white54))),
+        ],
       ),
       body: SafeArea(
         child: Container(
