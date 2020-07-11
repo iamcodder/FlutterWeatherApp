@@ -187,8 +187,7 @@ class _CityScreenState extends State<CityScreen> {
               ),
               ExpandedText(
                 '${double.parse(currentDegree.toString()).round()}°C' +
-                    '\n${fetchedWeatherModel.list[0].weather[0].description
-                        .toString()}' +
+                    '\n${fetchedWeatherModel.list[0].weather[0].description.toString()}' +
                     '\n',
                 kTempTextStyle,
                 textColor: Colors.white,

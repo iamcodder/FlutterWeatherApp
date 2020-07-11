@@ -21,6 +21,8 @@ dependencies:
   intl: ^0.16.0
   fl_chart: ^0.10.1
   google_maps_flutter: ^0.5.28+1
+  flutter_google_places: ^0.2.5
+  geocoder: ^0.2.1
 
 dev_dependencies:
   flutter_test:
