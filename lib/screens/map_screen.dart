@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:weatherapp/key/key.dart';
+import 'package:weatherapp/utilities/constants.dart';
 
 // ignore: must_be_immutable
 class MapScreen extends StatefulWidget {
@@ -42,10 +44,10 @@ class MapScreenState extends State<MapScreen> {
       currentPosition = latLng;
       if (_markers.isNotEmpty) _markers.clear();
       _markers.add(Marker(
-        markerId: MarkerId(currentPosition.toString()),
-        position: currentPosition,
-        icon: BitmapDescriptor.defaultMarker,
-      ));
+          markerId: MarkerId(currentPosition.toString()),
+          position: currentPosition,
+          icon: BitmapDescriptor.defaultMarker,
+          infoWindow: InfoWindow(title: 'Selected Location')));
     });
   }
 
@@ -85,6 +87,8 @@ class MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
       onWillPop: gotoBackScreen,
       child: SafeArea(
@@ -98,22 +102,45 @@ class MapScreenState extends State<MapScreen> {
               markers: _markers,
               onCameraMove: _cameraMoved,
               onMapCreated: _mapCreated,
-              myLocationButtonEnabled: true,
-              myLocationEnabled: true,
               onTap: (value) => _addMarker(value),
             ),
-            Container(
+            GestureDetector(
+              onTap: () async {
+                Prediction p = await PlacesAutocomplete.show(
+                    context: context, apiKey: getApiKey());
+                LatLng latLng = await displayPrediction(p);
+                _addMarker(latLng);
+                _locationChange();
+              },
+              child: Align(
                 alignment: Alignment.topCenter,
-                child: RaisedButton(
-                  onPressed: () async {
-                    Prediction p = await PlacesAutocomplete.show(
-                        context: context, apiKey: getApiKey());
-                    LatLng latLng = await displayPrediction(p);
-                    _addMarker(latLng);
-                    _locationChange();
-                  },
-                  child: Text('Find address'),
-                )),
+                child: Container(
+                  margin: EdgeInsets.only(top: 10),
+                  width: screenWidth * 0.8,
+                  height: screenHeight * 0.08,
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular((10))),
+                    elevation: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              'Enter adress...',
+                              style: kCityTextStyle,
+                            ),
+                          ),
+                          Icon(Icons.search)
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Align(
