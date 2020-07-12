@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:weatherapp/data/fetched_weather_model.dart';
@@ -11,6 +10,7 @@ import 'package:weatherapp/utilities/decode_api.dart';
 import 'package:weatherapp/utilities/utilities.dart';
 import 'package:weatherapp/widgets/change_color_on_text.dart';
 import 'package:weatherapp/widgets/chart.dart';
+import 'package:weatherapp/widgets/circular_Bar.dart';
 import 'package:weatherapp/widgets/expanded_text.dart';
 
 import 'map_screen.dart';
@@ -28,6 +28,7 @@ class _CityScreenState extends State<CityScreen> {
   bool todayVisibling = true;
   bool tomorrowVisibling = false;
   bool afterVisibling = false;
+  bool circularIsVisible = false;
 
   FetchedWeatherModel fetchedWeatherModel;
   DecodeApi decodeApi;
@@ -81,14 +82,7 @@ class _CityScreenState extends State<CityScreen> {
     gradientList = decodeApi.getGradientList(selectedDay);
 
     setNewData();
-  }
-
-  void showProgress() {
-    EasyLoading.show(status: 'loading...');
-  }
-
-  void dismissProgress() {
-    EasyLoading.dismiss();
+    hideProgress();
   }
 
   void setNewData() {
@@ -106,7 +100,6 @@ class _CityScreenState extends State<CityScreen> {
       currentDegree = fetchedWeatherModel.list[0].main.temp;
       currentDescription = fetchedWeatherModel.list[0].weather[0].description;
     });
-    dismissProgress();
   }
 
   void changedLocation() async {
@@ -140,6 +133,18 @@ class _CityScreenState extends State<CityScreen> {
     });
   }
 
+  void showProgress() {
+    setState(() {
+      circularIsVisible = true;
+    });
+  }
+
+  void hideProgress() {
+    setState(() {
+      circularIsVisible = false;
+    });
+  }
+
   void setDayVisiblingColor(bool todayBool, bool tomorrowBool, bool afterBool) {
     setState(() {
       todayVisibling = todayBool;
@@ -165,88 +170,92 @@ class _CityScreenState extends State<CityScreen> {
         backgroundColor: gradientColors.beginColor,
       ),
       body: SafeArea(
-        child: FlutterEasyLoading(
-          child: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                  gradientColors.beginColor,
-                  gradientColors.endColor
-                ])),
-            child: Column(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: GestureDetector(
-                    onTap: () async {
-                      changedLocation();
-                    },
-                    child:
-                        Icon(Icons.location_on, size: 30, color: Colors.white),
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                    gradientColors.beginColor,
+                    gradientColors.endColor
+                  ])),
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () async {
+                        changedLocation();
+                      },
+                      child: Icon(Icons.location_on,
+                          size: 30, color: Colors.white),
+                    ),
                   ),
-                ),
-                ExpandedText(currentCity, kCityTextStyle,
-                    textColor: Colors.white, expandedValue: 1),
-                ExpandedText(currentDate, kCityTextStyle,
-                    textColor: Colors.white54, expandedValue: 1),
-                Expanded(
-                  flex: 5,
-                  child: Container(
-                    padding: EdgeInsets.all(6),
-                    child: Image.asset(currentImageName),
+                  ExpandedText(currentCity, kCityTextStyle,
+                      textColor: Colors.white, expandedValue: 1),
+                  ExpandedText(currentDate, kCityTextStyle,
+                      textColor: Colors.white54, expandedValue: 1),
+                  Expanded(
+                    flex: 5,
+                    child: Container(
+                      padding: EdgeInsets.all(6),
+                      child: Image.asset(currentImageName),
+                    ),
                   ),
-                ),
-                ExpandedText(
-                    '${double.parse(currentDegree.toString()).round()}°C' +
-                        '\n${fetchedWeatherModel.list[0].weather[0].description.toString()}' +
-                        '\n',
-                    kTempTextStyle,
-                    textColor: Colors.white,
-                    expandedValue: 2),
-                Expanded(
-                  flex: 1,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      GestureDetector(
-                        child: ChangeColorOnText(
-                            'Today', todayVisibling, kActiveDaysTextStyle),
-                        onTap: () {
-                          setState(() {
-                            clickCardDay(0);
-                          });
-                        },
-                      ),
-                      GestureDetector(
-                        child: ChangeColorOnText('Tomorrow', tomorrowVisibling,
-                            kPassiveDaysTextStyle),
-                        onTap: () {
-                          setState(() {
-                            clickCardDay(1);
-                          });
-                        },
-                      ),
-                      GestureDetector(
-                        child: ChangeColorOnText(
-                            'After', afterVisibling, kPassiveDaysTextStyle),
-                        onTap: () {
-                          setState(() {
-                            clickCardDay(2);
-                          });
-                        },
-                      ),
-                    ],
+                  ExpandedText(
+                      '${double.parse(currentDegree.toString()).round()}°C' +
+                          '\n${fetchedWeatherModel.list[0].weather[0].description.toString()}' +
+                          '\n',
+                      kTempTextStyle,
+                      textColor: Colors.white,
+                      expandedValue: 2),
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        GestureDetector(
+                          child: ChangeColorOnText(
+                              'Today', todayVisibling, kActiveDaysTextStyle),
+                          onTap: () {
+                            setState(() {
+                              clickCardDay(0);
+                            });
+                          },
+                        ),
+                        GestureDetector(
+                          child: ChangeColorOnText('Tomorrow',
+                              tomorrowVisibling, kPassiveDaysTextStyle),
+                          onTap: () {
+                            setState(() {
+                              clickCardDay(1);
+                            });
+                          },
+                        ),
+                        GestureDetector(
+                          child: ChangeColorOnText(
+                              'After', afterVisibling, kPassiveDaysTextStyle),
+                          onTap: () {
+                            setState(() {
+                              clickCardDay(2);
+                            });
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: BarChartSample1(fetchedWeatherModel, selectedDay),
-                ),
-              ],
+                  Expanded(
+                    flex: 4,
+                    child: BarChartSample1(fetchedWeatherModel, selectedDay),
+                  ),
+                ],
+              ),
             ),
-          ),
+            CustomCircularBar(MediaQuery.of(context).size.width,
+                circularIsVisible, 'Updating Degree'),
+          ],
         ),
       ),
     );

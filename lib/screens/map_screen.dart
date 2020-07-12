@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:weatherapp/key/key.dart';
 import 'package:weatherapp/utilities/constants.dart';
+import 'package:weatherapp/widgets/circular_Bar.dart';
 import 'package:weatherapp/widgets/fab_buttons.dart';
 
 // ignore: must_be_immutable
@@ -27,6 +28,8 @@ class MapScreenState extends State<MapScreen> {
   Set<Marker> _markers = {};
   GoogleMapsPlaces _places;
   GoogleMapController _mapController;
+
+  bool circularIsVisible = false;
 
   @override
   void initState() {
@@ -93,6 +96,18 @@ class MapScreenState extends State<MapScreen> {
     return willReturnLatLng;
   }
 
+  void showProgress() {
+    setState(() {
+      circularIsVisible = true;
+    });
+  }
+
+  void hideProgress() {
+    setState(() {
+      circularIsVisible = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -116,9 +131,11 @@ class MapScreenState extends State<MapScreen> {
               onTap: () async {
                 Prediction p = await PlacesAutocomplete.show(
                     context: context, apiKey: getApiKey());
+                showProgress();
                 LatLng latLng = await displayPrediction(p);
                 _addMarker(latLng);
                 _locationChange();
+                hideProgress();
               },
               child: Align(
                 alignment: Alignment.topCenter,
@@ -161,6 +178,8 @@ class MapScreenState extends State<MapScreen> {
                 ),
               ),
             ),
+            CustomCircularBar(
+                screenWidth, circularIsVisible, 'Searching Location'),
           ],
         ),
       ),
