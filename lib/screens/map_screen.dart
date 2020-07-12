@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:weatherapp/key/key.dart';
 import 'package:weatherapp/utilities/constants.dart';
+import 'package:weatherapp/widgets/fab_buttons.dart';
 
 // ignore: must_be_immutable
 class MapScreen extends StatefulWidget {
@@ -20,6 +21,7 @@ class MapScreen extends StatefulWidget {
 
 class MapScreenState extends State<MapScreen> {
   LatLng currentPosition;
+  LatLng initCurrentPosition;
   Completer<GoogleMapController> _controller = Completer();
   MapType _mapType = MapType.normal;
   Set<Marker> _markers = {};
@@ -30,6 +32,7 @@ class MapScreenState extends State<MapScreen> {
   void initState() {
     super.initState();
     currentPosition = LatLng(widget.latitude, widget.longitude);
+    initCurrentPosition = currentPosition;
     _addMarker(currentPosition);
     _places = GoogleMapsPlaces(apiKey: getApiKey());
   }
@@ -49,6 +52,11 @@ class MapScreenState extends State<MapScreen> {
           icon: BitmapDescriptor.defaultMarker,
           infoWindow: InfoWindow(title: 'Selected Location')));
     });
+  }
+
+  void currentLocation() {
+    _addMarker(initCurrentPosition);
+    _locationChange();
   }
 
   void _cameraMoved(CameraPosition position) {
@@ -145,11 +153,16 @@ class MapScreenState extends State<MapScreen> {
               padding: const EdgeInsets.all(16.0),
               child: Align(
                 alignment: AlignmentDirectional.bottomStart,
-                child: FloatingActionButton(
-                  onPressed: _mapTypeSelector,
-                  materialTapTargetSize: MaterialTapTargetSize.padded,
-                  backgroundColor: Colors.green,
-                  child: const Icon(Icons.map, size: 36.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    FabButton(
+                        screenWidth, _mapTypeSelector, Colors.green, Icons.map),
+                    SizedBox(height: screenWidth * 0.02),
+                    FabButton(screenWidth, currentLocation, Colors.blue,
+                        Icons.my_location),
+                    SizedBox(height: screenWidth * 0.05)
+                  ],
                 ),
               ),
             ),
