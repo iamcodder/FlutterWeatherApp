@@ -132,18 +132,13 @@ class MapScreenState extends State<MapScreen> {
                     elevation: 2,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              'Enter adress...',
-                              style: kCityTextStyle,
-                            ),
-                          ),
-                          Icon(Icons.search)
-                        ],
-                      ),
+                      child: Row(children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text('Enter adress...', style: kCityTextStyle),
+                        ),
+                        Icon(Icons.search)
+                      ]),
                     ),
                   ),
                 ),
