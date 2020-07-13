@@ -99,7 +99,7 @@ class BarChartSample1State extends State<BarChartSample1> {
                   decodeApi.getDegreeList(widget.daysOfWeekPosition)[position];
               return BarTooltipItem(
                   weekDay +
-                      '°C\n' +
+                      ' °C\n' +
                       decodeApi.getDescriptionList(
                           widget.daysOfWeekPosition)[position],
                   TextStyle(color: Colors.yellow));

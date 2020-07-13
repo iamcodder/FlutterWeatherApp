@@ -15,16 +15,16 @@ import 'package:weatherapp/widgets/expanded_text.dart';
 
 import 'map_screen.dart';
 
-class CityScreen extends StatefulWidget {
-  CityScreen(this.model);
+class HomeScreen extends StatefulWidget {
+  HomeScreen(this.model);
 
   final FetchedWeatherModel model;
 
   @override
-  _CityScreenState createState() => _CityScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _CityScreenState extends State<CityScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   bool todayVisibling = true;
   bool tomorrowVisibling = false;
   bool afterVisibling = false;
@@ -47,10 +47,13 @@ class _CityScreenState extends State<CityScreen> {
   GradientColors gradientColors;
 
   int selectedDay;
+  LatLng deviceCurrentLocation;
 
   @override
   void initState() {
     super.initState();
+    deviceCurrentLocation =
+        LatLng(widget.model.city.coord.lat, widget.model.city.coord.lon);
     initSettings();
   }
 
@@ -105,7 +108,9 @@ class _CityScreenState extends State<CityScreen> {
   void changedLocation() async {
     LatLng latLng = await Navigator.push(context,
         MaterialPageRoute(builder: (BuildContext context) {
-      return MapScreen(fetchedWeatherModel.city.coord.lat,
+      return MapScreen(
+          deviceCurrentLocation,
+          fetchedWeatherModel.city.coord.lat,
           fetchedWeatherModel.city.coord.lon);
     }));
     if (latLng != null) {
@@ -190,7 +195,7 @@ class _CityScreenState extends State<CityScreen> {
                         changedLocation();
                       },
                       child: Icon(Icons.location_on,
-                          size: 30, color: Colors.white),
+                          size: 40, color: Colors.white),
                     ),
                   ),
                   ExpandedText(currentCity, kCityTextStyle,

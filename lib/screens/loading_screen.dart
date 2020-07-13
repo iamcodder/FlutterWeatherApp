@@ -28,7 +28,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     }
 
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-      return CityScreen(weatherModel);
+      return HomeScreen(weatherModel);
     }), (route) => false);
   }
 
@@ -38,7 +38,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       body: Container(
         color: Colors.black,
         child: Center(
-          child: SpinKitFadingFour(
+          child: SpinKitWave(
             color: Colors.white,
             duration: const Duration(seconds: 1),
           ),

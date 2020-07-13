@@ -13,8 +13,9 @@ import 'package:weatherapp/widgets/fab_buttons.dart';
 // ignore: must_be_immutable
 class MapScreen extends StatefulWidget {
   double latitude, longitude;
+  LatLng deviceLocation;
 
-  MapScreen(this.latitude, this.longitude);
+  MapScreen(this.deviceLocation, this.latitude, this.longitude);
 
   @override
   State<MapScreen> createState() => MapScreenState();
@@ -22,7 +23,7 @@ class MapScreen extends StatefulWidget {
 
 class MapScreenState extends State<MapScreen> {
   LatLng currentPosition;
-  LatLng initCurrentPosition;
+  LatLng deviceCurrentLocation;
   Completer<GoogleMapController> _controller = Completer();
   MapType _mapType = MapType.normal;
   Set<Marker> _markers = {};
@@ -35,7 +36,7 @@ class MapScreenState extends State<MapScreen> {
   void initState() {
     super.initState();
     currentPosition = LatLng(widget.latitude, widget.longitude);
-    initCurrentPosition = currentPosition;
+    deviceCurrentLocation = widget.deviceLocation;
     _addMarker(currentPosition);
     _places = GoogleMapsPlaces(apiKey: getApiKey());
   }
@@ -58,7 +59,7 @@ class MapScreenState extends State<MapScreen> {
   }
 
   void currentLocation() {
-    _addMarker(initCurrentPosition);
+    _addMarker(deviceCurrentLocation);
     _locationChange();
   }
 
