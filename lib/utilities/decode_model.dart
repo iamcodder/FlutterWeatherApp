@@ -1,5 +1,5 @@
-import 'package:weatherapp/data/fetched_weather_model.dart';
-import 'package:weatherapp/data/weather_model.dart';
+import 'package:WeatherForecast/data/fetched_weather_model.dart';
+import 'package:WeatherForecast/data/weather_model.dart';
 
 WeatherModel decodeWeatherModel(
     FetchedWeatherModel fetchedWeatherModel, int position) {

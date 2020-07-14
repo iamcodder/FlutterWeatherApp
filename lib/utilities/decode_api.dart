@@ -1,8 +1,8 @@
+import 'package:WeatherForecast/data/fetched_weather_model.dart';
+import 'package:WeatherForecast/data/gradient_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_icons/weather_icons.dart';
-import 'package:weatherapp/data/fetched_weather_model.dart';
-import 'package:weatherapp/data/gradient_colors.dart';
 
 class DecodeApi {
   FetchedWeatherModel weatherModel;
@@ -87,10 +87,10 @@ class DecodeApi {
     while (!isDone) {
       indis++;
       String time =
-          weatherModel.list[indis].dt_txt.toString().substring(11, 16);
+      weatherModel.list[indis].dt_txt.toString().substring(11, 16);
       String temp = weatherModel.list[indis].main.temp.toString().split('.')[0];
       String description =
-          weatherModel.list[indis].weather[0].description.toString();
+      weatherModel.list[indis].weather[0].description.toString();
       String iconName = weatherModel.list[indis].weather[0].icon;
       IconData iconData = _getIcon(iconName);
       GradientColors gradientColors = getGradient(iconName);

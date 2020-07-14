@@ -1,7 +1,7 @@
+import 'package:WeatherForecast/data/fetched_weather_model.dart';
+import 'package:WeatherForecast/utilities/decode_api.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:weatherapp/data/fetched_weather_model.dart';
-import 'package:weatherapp/utilities/decode_api.dart';
 
 class BarChartSample1 extends StatefulWidget {
   BarChartSample1(this.fetchedWeatherModel, this.daysOfWeekPosition);
@@ -45,8 +45,8 @@ class BarChartSample1State extends State<BarChartSample1> {
   List<BarChartGroupData> showingGroups() {
     List<BarChartGroupData> tempList = List();
     for (int i = 0;
-        i < decodeApi.getTimeList(widget.daysOfWeekPosition).length;
-        i++) {
+    i < decodeApi.getTimeList(widget.daysOfWeekPosition).length;
+    i++) {
       tempList.add(makeGroupData(i,
           double.parse(decodeApi.getDegreeList(widget.daysOfWeekPosition)[i]),
           isTouched: i == touchedIndex));
@@ -54,16 +54,15 @@ class BarChartSample1State extends State<BarChartSample1> {
     return tempList;
   }
 
-  BarChartGroupData makeGroupData(
-    //x bar konumunu gösteriyor
-    int x,
-    //y ise beyaz renki çubuğu gösteriyor.Yani kaç derece olduğunu
-    double y, {
-    bool isTouched = false,
-    Color barColor = Colors.white,
-    double width = 22,
-    List<int> showTooltips = const [],
-  }) {
+  BarChartGroupData makeGroupData(//x bar konumunu gösteriyor
+      int x,
+      //y ise beyaz renki çubuğu gösteriyor.Yani kaç derece olduğunu
+      double y, {
+        bool isTouched = false,
+        Color barColor = Colors.white,
+        double width = 22,
+        List<int> showTooltips = const [],
+      }) {
     return BarChartGroupData(
       x: x,
       barRods: [
@@ -96,7 +95,7 @@ class BarChartSample1State extends State<BarChartSample1> {
 //              String weekDay = List<WeatherModel>[group.x.toInt()].toString();
               int position = group.x.toInt();
               String weekDay =
-                  decodeApi.getDegreeList(widget.daysOfWeekPosition)[position];
+              decodeApi.getDegreeList(widget.daysOfWeekPosition)[position];
               return BarTooltipItem(
                   weekDay +
                       ' °C\n' +

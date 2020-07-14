@@ -1,5 +1,5 @@
-name: weatherapp
-description: A new Flutter application.
+name: WeatherForecast
+description: A cool weather forecast app
 
 publish_to: 'everyone'
 version: 1.0.0+1

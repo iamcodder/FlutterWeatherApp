@@ -1,8 +1,9 @@
+import 'package:WeatherForecast/data/fetched_weather_model.dart';
+import 'package:WeatherForecast/utilities/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
-import 'package:weatherapp/data/fetched_weather_model.dart';
-import 'package:weatherapp/services/networking.dart';
-import 'package:weatherapp/utilities/utilities.dart';
+
+import 'networking.dart';
 
 class LocationServices {
   LocationServices() {
@@ -71,8 +72,7 @@ class LocationServices {
     }
   }
 
-  Future<FetchedWeatherModel> getLocation(
-      {bool isLatSetted = false, double latitude, double longitude}) async {
+  Future<FetchedWeatherModel> getLocation({bool isLatSetted = false, double latitude, double longitude}) async {
     String apiKey = '61a6141389fcb5ab641237c6ae8ffefc';
 
     LocationServices locationServices = LocationServices();
@@ -96,7 +96,7 @@ class LocationServices {
     Networking networking = isLatSetted == true
         ? Networking(latitude, longitude, apiKey)
         : Networking(
-            locationServices.latitude, locationServices.longitude, apiKey);
+        locationServices.latitude, locationServices.longitude, apiKey);
 
     bool isApiFetched = await networking.fetchDeneme();
 

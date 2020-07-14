@@ -1,17 +1,17 @@
+import 'package:WeatherForecast/data/fetched_weather_model.dart';
+import 'package:WeatherForecast/data/gradient_colors.dart';
+import 'package:WeatherForecast/services/location_services.dart';
+import 'package:WeatherForecast/utilities/constants.dart';
+import 'package:WeatherForecast/utilities/decode_api.dart';
+import 'package:WeatherForecast/utilities/utilities.dart';
+import 'package:WeatherForecast/widgets/change_color_on_text.dart';
+import 'package:WeatherForecast/widgets/chart.dart';
+import 'package:WeatherForecast/widgets/circular_Bar.dart';
+import 'package:WeatherForecast/widgets/expanded_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:weatherapp/data/fetched_weather_model.dart';
-import 'package:weatherapp/data/gradient_colors.dart';
-import 'package:weatherapp/services/location_services.dart';
-import 'package:weatherapp/utilities/constants.dart';
-import 'package:weatherapp/utilities/decode_api.dart';
-import 'package:weatherapp/utilities/utilities.dart';
-import 'package:weatherapp/widgets/change_color_on_text.dart';
-import 'package:weatherapp/widgets/chart.dart';
-import 'package:weatherapp/widgets/circular_Bar.dart';
-import 'package:weatherapp/widgets/expanded_text.dart';
 
 import 'map_screen.dart';
 
@@ -57,8 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
     initSettings();
   }
 
-  void initSettings(
-      {bool isRefresh = false, double latitude, double longitude}) async {
+  void initSettings({bool isRefresh = false, double latitude, double longitude}) async {
     FetchedWeatherModel tempModel;
 
     if (isRefresh) {
@@ -108,11 +107,11 @@ class _HomeScreenState extends State<HomeScreen> {
   void changedLocation() async {
     LatLng latLng = await Navigator.push(context,
         MaterialPageRoute(builder: (BuildContext context) {
-      return MapScreen(
-          deviceCurrentLocation,
-          fetchedWeatherModel.city.coord.lat,
-          fetchedWeatherModel.city.coord.lon);
-    }));
+          return MapScreen(
+              deviceCurrentLocation,
+              fetchedWeatherModel.city.coord.lat,
+              fetchedWeatherModel.city.coord.lon);
+        }));
     if (latLng != null) {
       initSettings(
           isRefresh: true,
@@ -183,9 +182,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                    gradientColors.beginColor,
-                    gradientColors.endColor
-                  ])),
+                        gradientColors.beginColor,
+                        gradientColors.endColor
+                      ])),
               child: Column(
                 children: [
                   Expanded(

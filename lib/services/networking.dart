@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:WeatherForecast/data/fetched_weather_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:weatherapp/data/fetched_weather_model.dart';
 
 class Networking {
   Networking(this._latitude, this._longitude, this._apiKey);

@@ -1,9 +1,10 @@
+import 'package:WeatherForecast/data/fetched_weather_model.dart';
+import 'package:WeatherForecast/services/location_services.dart';
+import 'package:WeatherForecast/utilities/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:weatherapp/data/fetched_weather_model.dart';
-import 'package:weatherapp/screens/home_screen.dart';
-import 'package:weatherapp/services/location_services.dart';
-import 'package:weatherapp/utilities/utilities.dart';
+
+import 'home_screen.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override

@@ -1,5 +1,5 @@
+import 'package:WeatherForecast/utilities/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:weatherapp/utilities/constants.dart';
 
 class CustomCircularBar extends StatelessWidget {
   CustomCircularBar(this.size, this.isVisible, this.message);
