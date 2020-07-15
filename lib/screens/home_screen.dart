@@ -57,7 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
     initSettings();
   }
 
-  void initSettings({bool isRefresh = false, double latitude, double longitude}) async {
+  void initSettings(
+      {bool isRefresh = false, double latitude, double longitude}) async {
     FetchedWeatherModel tempModel;
 
     if (isRefresh) {
@@ -107,11 +108,11 @@ class _HomeScreenState extends State<HomeScreen> {
   void changedLocation() async {
     LatLng latLng = await Navigator.push(context,
         MaterialPageRoute(builder: (BuildContext context) {
-          return MapScreen(
-              deviceCurrentLocation,
-              fetchedWeatherModel.city.coord.lat,
-              fetchedWeatherModel.city.coord.lon);
-        }));
+      return MapScreen(
+          deviceCurrentLocation,
+          fetchedWeatherModel.city.coord.lat,
+          fetchedWeatherModel.city.coord.lon);
+    }));
     if (latLng != null) {
       initSettings(
           isRefresh: true,
@@ -182,9 +183,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        gradientColors.beginColor,
-                        gradientColors.endColor
-                      ])),
+                    gradientColors.beginColor,
+                    gradientColors.endColor
+                  ])),
               child: Column(
                 children: [
                   Expanded(

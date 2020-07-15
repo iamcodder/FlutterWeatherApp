@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android.iml" filepath="$PROJECT_DIR$/.idea/modules/android.iml" group="android" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="android/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/628499315/flutter_plugin_android_lifecycle.iml" filepath="$PROJECT_DIR$/.idea/modules/628499315/flutter_plugin_android_lifecycle.iml" group="android/flutter_plugin_android_lifecycle" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/755109545/fluttertoast.iml" filepath="$PROJECT_DIR$/.idea/modules/755109545/fluttertoast.iml" group="android/fluttertoast" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/138797904/geocoder.iml" filepath="$PROJECT_DIR$/.idea/modules/138797904/geocoder.iml" group="android/geocoder" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/484549160/google_maps_flutter.iml" filepath="$PROJECT_DIR$/.idea/modules/484549160/google_maps_flutter.iml" group="android/google_maps_flutter" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1201328429/location.iml" filepath="$PROJECT_DIR$/.idea/modules/-1201328429/location.iml" group="android/location" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-760849884/location_web.iml" filepath="$PROJECT_DIR$/.idea/modules/-760849884/location_web.iml" group="android/location_web" />
+    </modules>
+  </component>
+</project>

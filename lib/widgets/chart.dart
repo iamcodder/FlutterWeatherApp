@@ -45,8 +45,8 @@ class BarChartSample1State extends State<BarChartSample1> {
   List<BarChartGroupData> showingGroups() {
     List<BarChartGroupData> tempList = List();
     for (int i = 0;
-    i < decodeApi.getTimeList(widget.daysOfWeekPosition).length;
-    i++) {
+        i < decodeApi.getTimeList(widget.daysOfWeekPosition).length;
+        i++) {
       tempList.add(makeGroupData(i,
           double.parse(decodeApi.getDegreeList(widget.daysOfWeekPosition)[i]),
           isTouched: i == touchedIndex));
@@ -54,15 +54,16 @@ class BarChartSample1State extends State<BarChartSample1> {
     return tempList;
   }
 
-  BarChartGroupData makeGroupData(//x bar konumunu gösteriyor
-      int x,
-      //y ise beyaz renki çubuğu gösteriyor.Yani kaç derece olduğunu
-      double y, {
-        bool isTouched = false,
-        Color barColor = Colors.white,
-        double width = 22,
-        List<int> showTooltips = const [],
-      }) {
+  BarChartGroupData makeGroupData(
+    //x bar konumunu gösteriyor
+    int x,
+    //y ise beyaz renki çubuğu gösteriyor.Yani kaç derece olduğunu
+    double y, {
+    bool isTouched = false,
+    Color barColor = Colors.white,
+    double width = 22,
+    List<int> showTooltips = const [],
+  }) {
     return BarChartGroupData(
       x: x,
       barRods: [
