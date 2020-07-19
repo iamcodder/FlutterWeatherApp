@@ -96,7 +96,7 @@ class BarChartSample1State extends State<BarChartSample1> {
 //              String weekDay = List<WeatherModel>[group.x.toInt()].toString();
               int position = group.x.toInt();
               String weekDay =
-              decodeApi.getDegreeList(widget.daysOfWeekPosition)[position];
+                  decodeApi.getDegreeList(widget.daysOfWeekPosition)[position];
               return BarTooltipItem(
                   weekDay +
                       ' °C\n' +

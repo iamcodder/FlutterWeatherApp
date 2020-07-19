@@ -8,6 +8,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: 'Weather Forecast',
       theme: ThemeData.light().copyWith(
         appBarTheme: AppBarTheme(
           color: Colors.white,

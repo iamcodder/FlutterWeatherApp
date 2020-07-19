@@ -1,4 +1,5 @@
 import 'package:WeatherForecast/data/fetched_weather_model.dart';
+import 'package:WeatherForecast/key/key.dart';
 import 'package:WeatherForecast/utilities/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
@@ -62,19 +63,23 @@ class LocationServices {
     }
   }
 
-  Future<void> _getLocationData() async {
+  Future<bool> _getLocationData() async {
     try {
       LocationData locationData = await _location.getLocation();
       _latitude = locationData.latitude;
       _longitude = locationData.longitude;
+      print('lat : $_latitude');
+      print('lon : $_longitude');
+
+      return true;
     } catch (e) {
-      return;
+      return false;
     }
   }
 
   Future<FetchedWeatherModel> getLocation(
       {bool isLatSetted = false, double latitude, double longitude}) async {
-    String apiKey = '61a6141389fcb5ab641237c6ae8ffefc';
+    String apiKey = getWeatherApiKey();
 
     LocationServices locationServices = LocationServices();
 
@@ -92,7 +97,10 @@ class LocationServices {
       hasPermission = await locationServices._requestPermission();
     }
 
-    await locationServices._getLocationData();
+    bool isFetchedLocation = await locationServices._getLocationData();
+    while (!isFetchedLocation) {
+      isFetchedLocation = await locationServices._getLocationData();
+    }
 
     Networking networking = isLatSetted == true
         ? Networking(latitude, longitude, apiKey)

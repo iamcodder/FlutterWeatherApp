@@ -38,12 +38,12 @@ class MapScreenState extends State<MapScreen> {
     currentPosition = LatLng(widget.latitude, widget.longitude);
     deviceCurrentLocation = widget.deviceLocation;
     _addMarker(currentPosition);
-    _places = GoogleMapsPlaces(apiKey: getApiKey());
+    _places = GoogleMapsPlaces(apiKey: getMapApiKey());
   }
 
   Future<bool> gotoBackScreen() async {
     Navigator.pop(context, currentPosition);
-    return false;
+    return true;
   }
 
   void _addMarker(LatLng latLng) {
@@ -123,6 +123,8 @@ class MapScreenState extends State<MapScreen> {
               initialCameraPosition:
                   CameraPosition(target: currentPosition, zoom: 18),
               zoomGesturesEnabled: true,
+              myLocationEnabled: true,
+              myLocationButtonEnabled: false,
               markers: _markers,
               onCameraMove: _cameraMoved,
               onMapCreated: _mapCreated,
@@ -131,7 +133,7 @@ class MapScreenState extends State<MapScreen> {
             GestureDetector(
               onTap: () async {
                 Prediction p = await PlacesAutocomplete.show(
-                    context: context, apiKey: getApiKey());
+                    context: context, apiKey: getMapApiKey());
                 showProgress();
                 LatLng latLng = await displayPrediction(p);
                 _addMarker(latLng);
