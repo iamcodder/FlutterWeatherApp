@@ -2,7 +2,7 @@ name: WeatherForecast
 description: A cool weather forecast app
 
 publish_to: 'everyone'
-version: 1.0.0+1
+version: 20.0.0+1000
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
